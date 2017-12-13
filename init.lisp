@@ -17,3 +17,10 @@
 ;;; Defaults ;;;
 ;; Change Cursor
 (stumpwm:run-shell-command "xsetroot -cursor_name left_ptr")
+
+;; Swank
+(require :swank)
+(swank-loader:init)
+(swank:create-server :port 4004
+                     :style swank:*communication-style*
+                     :dont-close t)
