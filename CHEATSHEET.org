@@ -1,2 +1,15 @@
+* Slime
+** Connect
+#+BEGIN_SRC lisp
+# Host: 127.0.0.1
+# Post: 4004
+M-x slime-connect
+#+END_SRC
+** Hack
+#+BEGIN_SRC sh
+CL-USER> lisp command
+#+END_SRC
 * Run command in shell
-(stumpwm:run-shell-command "xsetroot -cursor_name left_ptr"
+#+BEGIN_SRC lisp
+(stumpwm:run-shell-command "xsetroot -cursor_name left_ptr")
+#+END_SRC
