@@ -1,0 +1,2 @@
+* Run command in shell
+(stumpwm:run-shell-command "xsetroot -cursor_name left_ptr"
