@@ -1,3 +1,44 @@
+PrefixKey = Control + Super
+* Basic
+** emacs
+PrefixKey e
+** xterm
+PrefixKey c
+** List Windows
+PrefixKey w
+** Switch Windows
+PrefixKey PrefixKey
+** Split Screen into 2 Frames
+PrefixKey s
+PrefixKey S
+** Switch to Empty Frame
+PrefixKey TAB
+** Pull Into Empty Frame
+PrefixKey w
+PrefixKey WINDOW_NUMBER
+** Command Prompt
+PrefixKey ;
+** Time
+PrefixKey a
+** Internet
+PrefixKey !
+type: firefox
+** Remove All Frame But The Current One, Resize
+PrefixKey Q
+** Move Between Frames
+*** fnext
+PrefixKey o | TAB
+Jumps to next frame
+*** fother
+PrefixKey Meta-TAB
+Jumpes to last frame that had focus
+*** fselect
+PrefixKey f
+Displays numbers on each visible frame.
+Hit number key to move to frame.
+*** move-focus
+PrefixKey <Arrow Keys>
+focus the frame in direction
 * Slime
 ** Connect
 #+BEGIN_SRC lisp
