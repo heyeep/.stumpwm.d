@@ -581,7 +581,7 @@ the currently-defined commands, invoke the command called commands: ie press C-t
 “commands”, and hit return.
 
   Commonly-used commands can also be bound to a keystroke, which is much more convenient. To do
-this, use the define-key function (see Key Bindings), giving the name of the command as a string.
+this, use the define-key function (see [[2. Key Bindings]]), giving the name of the command as a string.
 For example:
 
   #+BEGIN_SRC lisp
@@ -591,7 +591,7 @@ For example:
   You cannot give the command name as a symbol, nor can you bind a key to a regular function
 defined with defun.
 
-  If the command takes arguments (see Writing Commands), you can fix those arguments when defining
+  If the command takes arguments (see [[3.1 Writing Commands]]), you can fix those arguments when defining
 the key-binding, by including the arguments in the same string as the command name, separated
 by a space. For instance, the exchange-direction command, which is unbound by default, requires
 a direction in which to exchange windows. If you call exchange-direction directly, it will prompt
@@ -763,10 +763,10 @@ cases, and let the command handle that.
   #+END_SRC
 * 4. Message and Input Bar
 ** Commands
-*** echo string
-  Display string in the message bar.
-*** colon &optional initial-input
-  Read a command from the user. initial-text is optional. When supplied, the text
+*** echo /string/
+  Display /string/ in the message bar.
+*** colon /&optional initial-input/
+  Read a command from the user. /initial-text/ is optional. When supplied, the text
 will appear in the prompt.
 ** Sections
 [[4.1 Customizing The Bar]]
@@ -777,18 +777,18 @@ will appear in the prompt.
   The bar’s appearance and behavior can be modified with the following functions
 and variables. See Colors for an explanation of how to set these color variables.
 *** Functions
-**** set-fg-color color
+**** set-fg-color /color/
   Set the foreground color for the message bar and input bar. color can be any
 color recognized by X.
-**** set-bg-color color
+**** set-bg-color /color/
   Set the background color for the message bar and input bar. color can be any
 color recognized by X.
-**** set-border-color color
+**** set-border-color /color/
   Set the border color for the message bar and input bar. color can be any color
 recognized by X.
-**** set-msg-border-width width
+**** set-msg-border-width /width/
   Set the border width for the message bar, input bar and frame indicator.
-**** set-font font
+**** set-font /font/
   Set the font(s) for the message bar and input bar.
 *** Variables
 **** *message-window-padding*
@@ -856,14 +856,16 @@ recognized by X.
 *** C-y
   Paste text from clipboard into the Input Bar (yank-selection).
 *** TAB
-  Clockwise tab complete the current string, if possible. Press TAB again to cycle through completions.
+  Clockwise tab complete the current string, if possible. Press TAB again to cycle through
+completions.
 *** S-TAB
-  Counter-clockwise tab complete the current string, if possible. Press S-TAB again to cycle through completions.
+  Counter-clockwise tab complete the current string, if possible. Press S-TAB again to
+cycle through completions.
 ** 4.3 Programming The Message Bar
 *** Functions
-**** echo-string screen msg
-  Display string in the message bar on screen. You almost always want to use message.
-**** message fmt &rest args
+**** echo-string /screen msg/
+  Display string in the message bar on /screen/. You almost always want to use message.
+**** message /fmt &rest args/
   run FMT and ARGS through ‘format’ and echo the result to the current screen.
 *** Variables
 ****  *input-history-ignore-duplicates*
@@ -873,24 +875,24 @@ recognized by X.
     Copy the last message displayed into the X selection
 ** 4.4 Programming the Input Bar
   New input behavior can be added to the input bar by creating editing functions and
-binding them to keys in the *input-map* using define-key, just like other key bindings.
+binding them to keys in the /*input-map*/ using define-key, just like other key bindings.
   An input function takes 2 arguments: the input structure and the key pressed.
 *** Functions
-**** read-one-line screen prompt &key (initial-input ) require-match password
+**** read-one-line /screen prompt &key (initial-input ) require-match password/
   Read a line of input through stumpwm and return it. returns nil if the user aborted.
-**** read-one-char screen
+**** read-one-char /screen/
   Read a single character from the user.
-**** completing-read screen prompt completions &key (initial-input ) require-match
+**** completing-read /screen prompt completions &key (initial-input ) require-match/
   Read a line of input through stumpwm and return it with TAB completion. completions can
 be a list, an fbound symbol, or a function. if its an fbound symbol or a function then
 that function is passed the substring to complete on and is expected to return a list of
 matches. If require-match argument is non-nil then the input must match with an element
 of the completions.
-**** input-insert-string input string
-  Insert string into the input at the current position. input must be of type input-line.
+**** input-insert-string /input string/
+  Insert /string/ into the input at the current position. /input/ must be of type /input-line/.
 Input functions are passed this structure as their first argument.
-**** input-insert-char input char
-  Insert char into the input at the current position. input must be of type input-line.
+**** input-insert-char /input char/
+  Insert /char/ into the input at the current position. /input/ must be of type /input-line/.
 Input functions are passed this structure as their first argument.
 *** Variables
 **** *input-map*
@@ -901,13 +903,17 @@ Input functions are passed this structure as their first argument.
   Go to the next window in the window list.
 *** prev
   Go to the previous window in the window list.
-*** delete-window &optional (window (current-window))
-  Delete a window. By default delete the current window. This is a request sent to the window. The window’s client may decide not to grant the request or may not be able to if it is unresponsive.
-*** kill-window &optional (window (current-window))
-  Tell X to disconnect the client that owns the specified window. Default to the current window. if delete-window didn’t work, try this.
-*** echo-windows &optional (fmt *window-format*) (group
-  (current-group)) (windows (group-windows group)) Display a list of managed windows. The optional argument fmt can be used to override the default window formatting.
-*** other-window &optional (group (current-group))
+*** delete-window /&optional (window (current-wbindow))/
+  Delete a window. By default delete the current window. This is a request sent to the window.
+The window’s client may decide not to grant the request or may not be able to if it is
+unresponsive.
+*** kill-window /&optional (window (current-window))/
+  Tell X to disconnect the client that owns the specified window. Default to the current window.
+if delete-window didn’t work, try this.
+*** echo-windows /&optional (fmt *window-format*) (group (current-group)) (windows (group-windows group))/
+  Display a list of managed windows. The optional
+argument /fmt/ can be used to override the default window formatting.
+*** other-window /&optional (group (current-group))/
   Switch to the window last focused.
 *** pull-hidden-next
   Pull the next hidden window into the current frame.
@@ -916,24 +922,35 @@ Input functions are passed this structure as their first argument.
 *** pull-hidden-other
   Pull the last focused, hidden window into the current frame.
 *** pull-from-windowlist
-  Pulls a window selected from the list of windows. This allows a behavior similar to Emacs’ switch-to-buffer when selecting another window.
-*** renumber nt &optional (group (current-group))
-  Change the current window’s number to the specified number. If another window is using the number, then the windows swap numbers. Defaults to current group.
-*** meta key
-  Send a fake key to the current window. key is a typical StumpWM key, like C-M-o.
-*** select-window query
-  Switch to the first window that starts with query.
-*** select-window-by-number num &optional (group (current-group))
+  Pulls a window selected from the list of windows. This allows a behavior similar to Emacs’
+switch-to-buffer when selecting another window.
+*** renumber /nt &optional (group (current-group))/
+  Change the current window’s number to the specified number. If another window is using the
+number, then the windows swap numbers. Defaults to current group.
+*** meta /key/
+  Send a fake key to the current window. /key/ is a typical StumpWM key, like C-M-o.
+*** select-window /query/
+  Switch to the first window that starts with /query/.
+*** select-window-by-number /num &optional (group (current-group))/
   Find the window with the given number and focus it in its frame.
-*** title title
+*** title /title/
   Override the current window’s title.
-*** windowlist &optional (fmt *window-format*) window-list
-  Allow the user to select a window from the list of windows and focus the selected window. For information of menu bindings See section Menus. The optional argument fmt can be specified to override the default window formatting. The optional argument window-list can be provided to show a custom window list (see windowlist-by-class). The default window list is the list of all window in the current group. Also note that the default window list is sorted by number and if the windows-list is provided, it is shown unsorted (as-is).
+*** windowlist /&optional (fmt *window-format*) window-list/
+  Allow the user to select a window from the list of windows and focus the selected window. For
+information of menu bindings See section [[12.1 Menus]]. The optional argument /fmt/ can be specified to
+override the default window formatting. The optional argument /window-list/ can be provided to
+show a custom window list (see windowlist-by-class). The default window list is the list of
+all window in the current group. Also note that the default window list is sorted by number
+and if the /windows-list/ is provided, it is shown unsorted (as-is).
 *** windowlist-by-class &optional (fmt *window-format-by-class*)
-  Allow the user to select a window from the list of windows (sorted by class) and focus the selected window. For information of menu bindings See section Menus. The optional argument fmt can be specified to override the default window formatting. This is a simple wrapper around the command windowlist.
+  Allow the user to select a window from the list of windows (sorted by class) and focus the
+selected window. For information of menu bindings See section [[12.1 Menus]]. The optional argument
+/fmt/ can be specified to override the default window formatting. This is a simple wrapper
+around the command windowlist.
 *** fullscreen
-  Toggle the fullscreen mode of the current widnow. Use this for clients with broken (non-NETWM) fullscreen implemenations, such as any program using SDL.
-*** info &optional (fmt *window-info-format*)
+  Toggle the fullscreen mode of the current window. Use this for clients with broken (non-NETWM)
+fullscreen implemenations, such as any program using SDL.
+*** info /&optional (fmt *window-info-format*)//
   Display information about the current window.
 *** refresh
   Refresh current window without changing its size.
@@ -941,40 +958,35 @@ Input functions are passed this structure as their first argument.
   Refresh current window by a pair of resizes, also make it occupy entire frame.
 ** Variables
 *** *window-format*
-  This variable decides how the window list is formatted. It is a string with the following formatting options:
-
-  %n
-    Substitutes the windows number translated via *window-number-map*, if there are more windows than *window-number-map* then will use the window-number.
-
-  %s
-    Substitute the window’s status. * means current window, + means last window, and - means any other window.
-
-  %t
-    Substitute the window’s name.
-
-  %c
-    Substitute the window’s class.
-
-  %i
-    Substitute the window’s resource ID.
-
-  %m
-    Draw a # if the window is marked.
-
-  Note, a prefix number can be used to crop the argument to a specified size. For instance, ‘%20t’ crops the window’s title to 20 characters.
+  This variable decides how the window list is formatted. It is a string with the following
+formatting options:
+**** %n
+  Substitutes the windows number translated via *window-number-map*, if there are more
+than *window-number-map* then will use the window-number.
+**** %s
+  Substitute the window’s status. * means current window, + means last window, and -
+any other window.
+**** %t
+  Substitute the window’s name.
+**** %c
+  Substitute the window’s class.
+**** %i
+  Substitute the window’s resource ID.
+**** %m
+  Draw a # if the window is marked.
+**** Note
+  Note, a prefix number can be used to crop the argument to a specified size. For instance, ‘%20t’
+crops the window’s title to 20 characters.
 *** *window-info-format*
-  The format used in the info command. *window-format* for formatting details.
+  The format used in the info command. /*window-format*/ for formatting details.
 *** *window-name-source*
   This variable controls what is used for the window’s name. The default is :title.
-
-  :title
-    Use the window’s title given to it by its owner.
-
-  :class
-    Use the window’s resource class.
-
-  :resource-name
-    Use the window’s resource name.
+**** :title
+  Use the window’s title given to it by its owner.
+**** :class
+  Use the window’s resource class.
+**** :resource-name
+  Use the window’s resource name.
 ***  *new-window-prefered-frame*
   nil
 ** Sections
@@ -985,123 +997,91 @@ Input functions are passed this structure as their first argument.
 [[5.5 Rule Based Window Placement]]
 [[5.6 Window Selection Expressions]]
 ** 5.1 Window Marks
-Windows can be marked. A marked window has a # beside it in the window list. Some commands operate only on marked windows.
-
-Command: mark
-
-    Toggle the current window’s mark.
-
-Command: clear-window-marks &optional (group (current-group)) (windows
-
-    (group-windows group)) Clear all marks in the current group.
-
-Command: pull-marked
-
-    Pull all marked windows into the current frame and clear the marks.
+  Windows can be marked. A marked window has a # beside it in the window list. Some commands operate only on marked windows.
+*** Commands
+**** mark
+  Toggle the current window’s mark.
+**** clear-window-marks /&optional (group (current-group)) (windows (group-windows group))//
+  Clear all marks in the current group.
+**** pull-marked
+  Pull all marked windows into the current frame and clear the marks.
 ** 5.2 Customizing Window Appearance
-Variable: *maxsize-border-width*
+*** Variables
+**** *maxsize-border-width*
+  The width in pixels given to the borders of windows with maxsize or ratio hints.
+**** *transient-border-width*
+  The width in pixels given to the borders of transient or pop-up windows.
+****  *normal-border-width*
+  The width in pixels given to the borders of regular windows.
+****  *window-border-style*
+  This controls the appearance of the border around windows. valid values
+***** /:thick/
+  All space within the frame not used by the window is dedicated to the
+***** /:thin/
+  Only the border width as controlled by *maxsize-border-width* *normal-border-width*
+and *transient-border-width* is used as the border. The rest is filled with the unfocus color.
+***** /:tight/
+  The same as :thin but the border surrounds the window and the wasted space within the
+frame is not obscured, revealing the background
+***** /:none/
+  Like :tight but no border is ever visible.
+***** After
+  After changing this variable you may need to call sync-all-frame-windows to see the change.
+**** See
+  See [[13. Colors]] for an explanation of how to set these color variables.
+*** Functions
+**** set-win-bg-color /color/
+  Set the background color of the window. The background color will only be visible for windows
+with size increment hints such as ‘emacs’ and ‘xterm’.
+**** set-focus-color /color/
+  Set the border color for focused windows. This is only used when there is more than one frame.
+**** set-unfocus-color /color/
+  Set the border color for windows without focus. This is only used when there is more than one frame.
+**** set-float-focus-color /color/
+  Set the border color for focused windows in a float group.
+**** set-float-unfocus-color /color/
+  Set the border color for windows without focus in a float group.
+**** set-normal-gravity /gravity/
+  Set the default gravity for normal windows. Possible values are :center :top :left :right :bottom
+:top-left :top-right :bottom-left and :bottom-right.
+**** set-maxsize-gravity /gravity/
+  Set the default gravity for maxsize windows.
+**** set-transient-gravity /gravity/
+  Set the default gravity for transient/pop-up windows.
+*** Commands
+**** gravity /gravity/
+  Set a window’s gravity within its frame. Gravity controls where the window will appear in a
+frame if it is smaller that the frame. Possible values are:
 
-    The width in pixels given to the borders of windows with maxsize or ratio hints.
-
-Variable: *transient-border-width*
-
-    The width in pixels given to the borders of transient or pop-up windows.
-
-Variable: *normal-border-width*
-
-    The width in pixels given to the borders of regular windows.
-
-Variable: *window-border-style*
-
-    This controls the appearance of the border around windows. valid values are:
-
-    :thick
-
-        All space within the frame not used by the window is dedicated to the border.
-    :thin
-
-        Only the border width as controlled by *maxsize-border-width* *normal-border-width* and *transient-border-width* is used as the border. The rest is filled with the unfocus color.
-    :tight
-
-        The same as :thin but the border surrounds the window and the wasted space within the frame is not obscured, revealing the background.
-    :none
-
-        Like :tight but no border is ever visible.
-
-    After changing this variable you may need to call sync-all-frame-windows to see the change.
-
-See Colors for an explanation of how to set these color variables.
-
-Function: set-win-bg-color color
-
-    Set the background color of the window. The background color will only be visible for windows with size increment hints such as ‘emacs’ and ‘xterm’.
-
-Function: set-focus-color color
-
-    Set the border color for focused windows. This is only used when there is more than one frame.
-
-Function: set-unfocus-color color
-
-    Set the border color for windows without focus. This is only used when there is more than one frame.
-
-Function: set-float-focus-color color
-
-    Set the border color for focused windows in a float group.
-
-Function: set-float-unfocus-color color
-
-    Set the border color for windows without focus in a float group.
-
-Function: set-normal-gravity gravity
-
-    Set the default gravity for normal windows. Possible values are :center :top :left :right :bottom :top-left :top-right :bottom-left and :bottom-right.
-
-Function: set-maxsize-gravity gravity
-
-    Set the default gravity for maxsize windows.
-
-Function: set-transient-gravity gravity
-
-    Set the default gravity for transient/pop-up windows.
-
-Command: gravity gravity
-
-    Set a window’s gravity within its frame. Gravity controls where the window will appear in a frame if it is smaller that the frame. Possible values are:
-
-    center
-    top
-    right
-    bottom
-    left
-    top-right
-    top-left
-    bottom-right
-    bottom-left
+  /center/
+  /top/
+  /right/
+  /bottom/
+  /left/
+  /top-right/
+  /top-left/
+  /bottom-right/
+  /bottom-left/
 ** 5.3 Controlling Raise And Map Requests
-
-It is sometimes handy to deny a window’s request to be focused. The following variables determine such behavior.
-
-A map request occurs when a new or withdrawn window requests to be mapped for the first time.
-
-A raise request occurs when a client asks the window manager to give an existing window focus.
-
-Variable: *deny-map-request*
-
-    A list of window properties that stumpwm should deny matching windows’ requests to become mapped for the first time.
-
-Variable: *deny-raise-request*
-
-    Exactly the same as *deny-map-request* but for raise requests.
+  It is sometimes handy to deny a window’s request to be focused. The following
+variables determine such behavior.
+  A map request occurs when a new or withdrawn window requests to be mapped for
+the first time.
+  A raise request occurs when a client asks the window manager to give an existing
+window focus.
+*** Variables
+**** *deny-map-request*
+    A list of window properties that stumpwm should deny matching windows’ requests to
+become mapped for the first time.
+**** *deny-raise-request*
+    Exactly the same as /*deny-map-request*/ but for raise requests.
 
     Note that no denial message is displayed if the window is already visible.
-
-Variable: *suppress-deny-messages*
-
-    For complete focus on the task at hand, set this to T and no raise/map denial messages will be seen.
-
-Some examples follow.
-
-
+**** *suppress-deny-messages*
+    For complete focus on the task at hand, set this to T and no raise/map denial messages
+will be seen.
+**** Some examples follow
+#+BEGIN_SRC lisp
 ;; Deny the firefox window from taking focus when clicked upon.
 (push '(:class "gecko") stumpwm:*deny-raise-request*)
 
@@ -1113,147 +1093,125 @@ Some examples follow.
 
 ;; Deny the all windows in the xterm class from taking focus.
 (push '(:class "Xterm") stumpwm:*deny-raise-request*)
+#+END_SRC
 ** 5.4 Programming With Windows
-
-Macro: define-window-slot attr
-
+*** Macros
+**** define-window-slot /attr/
     Create a new window attribute and corresponding get/set functions.
-
-Function: window-send-string string &optional (window (current-window))
-
-    Send the string of characters to the current window as if they’d been typed.
-
-Variable: *default-window-name*
-
+*** Functions
+**** window-send-string /string &optional (window (current-window))/
+    Send the string of characters to the current window as if they’d been
+typed.
+*** Variables
+**** *default-window-name*
     The name given to a window that does not supply its own name.
-
 ** 5.5 Rule Based Window Placement
+*** Macros
+**** define-frame-preference /target-group &rest frame-rules/
+  Create a rule that matches windows and automatically places them in a
+specified group and frame. Each frame rule is a lambda list:
 
-Macro: define-frame-preference target-group &rest frame-rules
-
-    Create a rule that matches windows and automatically places them in a specified group and frame. Each frame rule is a lambda list:
-
-
-    (frame-number raise lock &key create restore dump-name class instance type role title)
-
-    frame-number
-
-        The frame number to send matching windows to
-    raise
-
-        When non-nil, raise and focus the window in its frame
-    lock
-
-        When this is nil, this rule will only match when the current group matches target-group. When non-nil, this rule matches regardless of the group and the window is sent to target-group. If lock and raise are both non-nil, then stumpwm will jump to the specified group and focus the matched window.
-    create
-
-        When non-NIL the group is created and eventually restored when the value of create is a group dump filename in *DATA-DIR*. Defaults to NIL.
-    restore
-
-        When non-NIL the group is restored even if it already exists. This arg should be set to the dump filename to use for forced restore. Defaults to NIL
-    class
-
-        The window’s class must match class.
-    instance
-
-        The window’s instance/resource name must match instance.
-    type
-
-        The window’s type must match type.
-    role
-
-        The window’s role must match role.
-    title
-
-        The window’s title must match title.
-
-Function: clear-window-placement-rules
-
-    Clear all window placement rules.
-
-Command: remember lock title
-
-    Make a generic placement rule for the current window. Might be too specific/not specific enough!
-
-Command: forget
-
-    Forget the window placement rule that matches the current window.
-
-Command: dump-window-placement-rules file
-
-    Dump *window-placement-rules* to FILE.
-
-Command: restore-window-placement-rules file
-
-    Restore *window-placement-rules* from FILE.
+  #+BEGIN_SRC lisp
+  (frame-number raise lock &key create restore dump-name class instance type role title)
+  #+END_SRC
+***** /frame-number/
+  The frame number to send matching windows to
+***** /raise/
+  When non-nil, raise and focus the window in its frame
+***** /lock/
+  When this is nil, this rule will only match when the current group matches
+/target-group/. When non-nil, this rule matches regardless of the group and the
+window is sent to /target-group/. If /lock/ and /raise/ are both non-nil, then
+stumpwm will jump to the specified group and focus the matched window.
+***** /create/
+  When non-NIL the group is created and eventually restored when the value of
+create is a group dump filename in *DATA-DIR*. Defaults to NIL.
+***** /restore/
+  When non-NIL the group is restored even if it already exists. This arg should
+be set to the dump filename to use for forced restore. Defaults to NIL
+***** /class/
+  The window’s class must match /class/.
+***** /instance/
+  The window’s instance/resource name must match /instance/.
+***** /type/
+  The window’s type must match /type/.
+***** /role/
+  The window’s role must match /role/.
+***** /title/
+  The window’s title must match /title/.
+*** Functions
+**** clear-window-placement-rules
+  Clear all window placement rules.
+*** Commands
+**** remember /lock title/
+  Make a generic placement rule for the current window. Might be too
+specific/not specific enough!
+**** forget
+  Forget the window placement rule that matches the current window.
+**** dump-window-placement-rules /file/
+  Dump *window-placement-rules* to FILE.
+**** restore-window-placement-rules /file/
+  Restore *window-placement-rules* from FILE.
 ** 5.6 Window Selection Expressions
+  Window Selection Expressions (WSE) were inspired by SQL. The intent is to
+allow writing consise code to select the windows you need and to act upon
+them (or just to get the list of selected windows). The implementation includes
+a set of (hopefully) consistent consisely-named wrappers for the StumpWM
+functionality useful for window set description and the act-on-matching-windows
+macro that encapsulates the logic of iterating over a window set.
 
-Window Selection Expressions (WSE) were inspired by SQL. The intent is to allow writing consise code to select the windows you need and to act upon them (or just to get the list of selected windows). The implementation includes a set of (hopefully) consistent consisely-named wrappers for the StumpWM functionality useful for window set description and the act-on-matching-windows macro that encapsulates the logic of iterating over a window set.
+  If we had SQL in StumpWM, we would write select window_id from windows as w
+where w.title = 'XTerm'. WSE chooses to be more Lisp-style and instead uses
+(act-on-matching-windows (w) (titled-p w "XTerm") w)
 
-If we had SQL in StumpWM, we would write select window_id from windows as w where w.title = 'XTerm'. WSE chooses to be more Lisp-style and instead uses (act-on-matching-windows (w) (titled-p w "XTerm") w)
-
-The act-on-matching-windows function also allows performing some actions, for example getting all the windows titled XTerm into the current group: (act-on-matching-windows (w) (titled-p w "XTerm") (pull-w w))
-
-Command: move-windows-to-group windows &optional (arggroup nil)
-
-    Move all windows from the list to the group
-
-Macro: act-on-matching-windows (var &optional (range (quote (current-screen)))) condition &rest code
-
-    Run code on all windows matching condition; var is the shared lambda variable. Range can be any screen/group/frame or :screen/:group/:frame for the current instance. Condition is just the code to evaluate.
-
-Command: pull-w w &optional g
-
+  The act-on-matching-windows function also allows performing some actions,
+for example getting all the windows titled XTerm into the current group:
+(act-on-matching-windows (w) (titled-p w "XTerm") (pull-w w))
+*** Commands
+**** move-windows-to-group /windows &optional (arggroup nil)/
+  Move all windows from the list to the group
+**** pull-w /w &optional g/
     Pull the window w: to the current group or to the specified group g.
-
-Command: titled-p w title
-
+**** titled-p /w title/
     Check whether window title of the window w is equal to the string title.
-
-Command: title-re-p w tre
-
-    Check whether the window title of the window w matches the regular expression tre.
-
-Command: classed-p w class
-
-    Check whether the window class of the window w is equal to the string class.
-
-Command: class-re-p w cre
-
-    Check whether the window class of the window w matches the regular expression cre.
-
-Command: typed-p w type
-
-    Check whether the window type of the window w is equal to the string type.
-
-Command: type-re-p w tre
-
-    Check whether the window type of the window w matches the regular expression tre.
-
-Command: roled-p w role
-
-    Check whether the window role of the window w is equal to the string role.
-
-Command: role-re-p w rre
-
-    Check whether the window role of the window w matches the regular expression rre.
-
-Command: resed-p w res
-
-    Check whether the window resource of the window w is equal to the string res.
-
-Command: res-re-p w rre
-
-    Check whether the window resource of the window w matches the regular expression rre.
-
-Command: grouped-p w &optional name
-
-    Check whether the window w belongs to the group name or the current group if name is not specified.
-
-Command: in-frame-p w &optional f
-
-    Check whether the window w belongs to the frame f or to the current frame if the frame is not specified.
-
+**** title-re-p /w tre/
+    Check whether the window title of the window w matches the regular
+expression tre.
+**** classed-p /w class/
+    Check whether the window class of the window w is equal to the
+string class.
+**** class-re-p /w cre/
+  Check whether the window class of the window w matches the regular
+expression cre.
+**** typed-p /w type/
+  Check whether the window type of the window w is equal to the string
+type.
+**** type-re-p /w tre/
+  Check whether the window type of the window w matches the regular
+expression tre.
+**** roled-p /w role/
+  Check whether the window role of the window w is equal to the string
+role.
+**** role-re-p /w rre/
+  Check whether the window role of the window w matches the regular
+expression rre.
+**** resed-p /w res/
+  Check whether the window resource of the window w is equal to the
+string res.
+**** res-re-p /w rre/
+  Check whether the window resource of the window w matches the regular
+expression rre.
+**** grouped-p /w &optional name/
+  Check whether the window w belongs to the group name or the current group
+if name is not specified.
+**** in-frame-p /w &optional f/
+  Check whether the window w belongs to the frame f or to the current frame
+if the frame is not specified.
+*** Macros
+**** act-on-matching-windows /(var &optional (range (quote (current-screen)))) condition &rest code/
+  Run code on all windows matching condition; var is the shared lambda
+variable. Range can be any screen/group/frame or :screen/:group/:frame
+for the current instance. Condition is just the code to evaluate.
 * 6. Frames
 Frames contain windows. All windows exist within a frame.
 
