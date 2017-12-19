@@ -15,7 +15,7 @@ PrefixKey S
 PrefixKey TAB
 ** Pull Into Empty Frame
 PrefixKey w
-PrefixKey WINDOW_NUMBER
+Enter: WINDOW_NUMBER
 ** Command Prompt
 PrefixKey ;
 ** Time
@@ -39,6 +39,41 @@ Hit number key to move to frame.
 *** move-focus
 PrefixKey <Arrow Keys>
 focus the frame in direction
+** Manipulate Windows
+*** next-in-frame
+PrefixKey PrefixKey-Meta-n
+*** prev-in-frame
+PrefixKey PrefixKey-Meta-p
+*** other-in-frame
+PrefixKey Meta-t
+*** frame-windowlist
+*** next
+PrefixKey M-n
+*** prev
+PrefixKey M-p
+*** other or other-window
+*** next-urgent
+PrefixKey PrefixKey-u
+*** select or select-window
+PrefixKey `
+*** select-window-by-name
+*** select-window-by-number
+PrefixKey <number>
+*** windowlist
+PrefixKey "
+*** pull or pull-window-by-number
+PrefixKey PrefixKey-<NUMBER>
+*** pull-hidden-next
+PrefixKey n | SPACE
+*** pull-hidden-previous
+PrefixKey prev
+*** pull-hidden-other
+PrefixKey PrefixKey
+*** move-window
+PrefixKey Meta-<ARROW>
+*** exchange-direction
+** Interaction
+PrefixKey :
 * Slime
 ** Connect
 #+BEGIN_SRC lisp

@@ -863,19 +863,139 @@ cases, and let the command handle that.
   (define-key *root-map* (kbd "R") "smarty right")
   #+END_SRC
 * 4. Message and Input Bar
-
 Command: echo string
-
-    Display string in the message bar.
+  Display string in the message bar.
 
 Command: colon &optional initial-input
+  Read a command from the user. initial-text is optional. When supplied, the text
+will appear in the prompt.
 
-    Read a command from the user. initial-text is optional. When supplied, the text will appear in the prompt.
+[[4.1 Customizing The Bar]]
+[[4.2 Using The Input Bar]]
+[[4.3 Programming The Message Bar]]
+[[4.4 Programming the Input Bar]]
+** 4.1 Customizing The Bar
+  The bar’s appearance and behavior can be modified with the following functions
+and variables. See Colors for an explanation of how to set these color variables.
+*** Functions
+**** set-fg-color color
+  Set the foreground color for the message bar and input bar. color can be any
+color recognized by X.
+**** set-bg-color color
+  Set the background color for the message bar and input bar. color can be any
+color recognized by X.
+**** set-border-color color
+  Set the border color for the message bar and input bar. color can be any color
+recognized by X.
+**** set-msg-border-width width
+  Set the border width for the message bar, input bar and frame indicator.
+**** set-font font
+  Set the font(s) for the message bar and input bar.
+*** Variables
+**** *message-window-padding*
+  The number of pixels that pad the text in the message window.
+**** *message-window-gravity*
+  This variable controls where the message window appears. The follow are valid values.
 
-4.1 Customizing The Bar
-4.2 Using The Input Bar
-4.3 Programming The Message Bar
-4.4 Programming the Input Bar
+  :top-left
+  :top-right
+  :bottom-left
+  :bottom-right
+  :center
+  :top
+  :left
+  :right
+  :bottom
+**** *timeout-wait*
+  Specifies, in seconds, how long a message will appear for. This must be an integer.
+**** *input-window-gravity*
+  This variable controls where the input window appears. The follow are valid values.
+
+  :top-left
+  :top-right
+  :bottom-left
+  :bottom-right
+  :center
+  :top
+  :left
+  :right
+  :bottom
+** 4.2 Using The Input Bar
+  The following is a list of keybindings for the Input Bar. Users of Emacs will recognize them.
+*** DEL
+  Delete the character before point (delete-backward-char).
+*** M-DEL
+  Kill back to the beginning of the previous word (backward-kill-word).
+*** C-d | Delete
+  Delete the character after point (delete-forward-char).
+*** M-d
+  Kill forward to the end of the next word (forward-kill-word).
+*** C-f | Right
+  Move forward one character (forward-char).
+*** M-f
+  Move forward one word (forward-word).
+*** C-b | Left
+  Move backward one character (backward-char).
+*** M-b
+  Move backward one word (backward-word).
+*** C-a | Home
+  Move to the beginning of the current line (move-beginning-of-line).
+*** C-e | End
+  Move to the end of the current line (move-end-of-line).
+*** C-k
+  Kill to the end of the line (kill-line).
+*** C-u
+  Kill to the beginning of the line (kill-to-beginning), the same as C-a C-k.
+*** C-p | Up
+  Move to the next earlier entry saved in the command history (history-back).
+*** C-n | Down
+  Move to the next later entry saved in the command history (history-forward).
+*** RET
+  Submit the entered command (submit).
+*** C-g
+  Abort the current action by closing the Input Bar (abort).
+*** C-y
+  Paste text from clipboard into the Input Bar (yank-selection).
+*** TAB
+  Clockwise tab complete the current string, if possible. Press TAB again to cycle through completions.
+*** S-TAB
+  Counter-clockwise tab complete the current string, if possible. Press S-TAB again to cycle through completions.
+** 4.3 Programming The Message Bar
+*** Functions
+**** echo-string screen msg
+  Display string in the message bar on screen. You almost always want to use message.
+**** message fmt &rest args
+  run FMT and ARGS through ‘format’ and echo the result to the current screen.
+*** Variables
+****  *input-history-ignore-duplicates*
+    Do not add a command to the input history if it’s already the first in the list.
+*** Commands
+**** copy-last-message
+    Copy the last message displayed into the X selection
+** 4.4 Programming the Input Bar
+  New input behavior can be added to the input bar by creating editing functions and
+binding them to keys in the *input-map* using define-key, just like other key bindings.
+  An input function takes 2 arguments: the input structure and the key pressed.
+*** Functions
+**** read-one-line screen prompt &key (initial-input ) require-match password
+  Read a line of input through stumpwm and return it. returns nil if the user aborted.
+**** read-one-char screen
+  Read a single character from the user.
+**** completing-read screen prompt completions &key (initial-input ) require-match
+  Read a line of input through stumpwm and return it with TAB completion. completions can
+be a list, an fbound symbol, or a function. if its an fbound symbol or a function then
+that function is passed the substring to complete on and is expected to return a list of
+matches. If require-match argument is non-nil then the input must match with an element
+of the completions.
+**** input-insert-string input string
+  Insert string into the input at the current position. input must be of type input-line.
+Input functions are passed this structure as their first argument.
+**** input-insert-char input char
+  Insert char into the input at the current position. input must be of type input-line.
+Input functions are passed this structure as their first argument.
+*** Variables
+**** *input-map*
+  This is the keymap containing all input editing key bindings.
 * 5. Windows
 Command: next
 
