@@ -27,6 +27,7 @@ managed by GNU screen, or emacs.
 grew out of the authors’ frustration with writing ratpoison in C. Very quickly we realized we were
 building into ratpoison lispy-emacs style paradigms. StumpWM’s goals are similar to ratpoison’s but
 with an emphasis on customizability, completeness, and cushiness.
+** Sections
 [[1.1 Starting StumpWM]]
 [[1.2 Basic Usage]]
 [[1.3 Basic Concepts]]
@@ -38,13 +39,13 @@ with an emphasis on customizability, completeness, and cushiness.
   There are a number of ways to start StumpWM but the most straight forward method is as follows.
 This assumes you have a copy of the StumpWM source code and are using the ‘SBCL’ Common Lisp
 environment.
-*** 1
+*** Step #1
   Install the prerequisites and build StumpWM as described in ‘README’. This should give you
 a ‘stumpwm’ executable.
-*** 2
+*** Step #2
   In your ‘~/.xinitrc’ file include the line /path/to/stumpwm. Remember to replace ‘/path/to/’
 with the actual path.
-*** 3
+*** Step #3
   Finally, start X windows with startx. Cross your fingers. You should see a ‘Welcome To the
 Stump Window Manager’ message pop up in the upper, right corner. At this point, you have
 successfully started StumpWM.
@@ -66,7 +67,7 @@ be executed from the input bar or bound to a key.
 This runs the other command. Type it again and you’re back to xterm.
 
   Perhaps you’d like to see emacs and xterm side-by-side. Type C-t s. You have now split the
-screen into 2 frames. For more information see [Frames]. To switch to the empty frame
+screen into 2 frames. For more information see [[6. Frames]]. To switch to the empty frame
 type C-t TAB. Now let’s pull the xterm window into this empty frame. Type C-t w for a
 window listing. Find the xterm window. See the number beside it? Type C-t followed by
 xterm’s window number.
@@ -78,9 +79,10 @@ and press return.
   Unfortunately, firefox probably isn’t wide enough because it’s in one of the frames.
 Type C-t Q to remove all frames but the current one and resize it to fit the screen.
 
-  For a full list of key bindings, see [List of Default Keybindings].
+  For a full list of key bindings, see [[2.1 List of Default Keybindings]].
 ** 1.3 Basic Concepts
   An introduction to some of the basic concepts used by StumpWM.
+*** Sections
 [[1.3.1 Screens and Heads]]
 [[1.3.2 Group Basics]]
 [[1.3.3 Floating Group Basics]]
@@ -243,11 +245,14 @@ type some Lisp expression.
 exported symbols from the main STUMPWM package.
 
 *mode-line-border-width*
-  Reads the value of *mode-line-border-width*.
+  Reads the value of /*mode-line-border-width*/.
+#+BEGIN_SRC lisp
 (setf *mode-line-border-width* 3)
-
-  Sets the variable *mode-line-border-width* to 3.
+#+END_SRC
+  Sets the variable /*mode-line-border-width*/ to 3.
+#+BEGIN_SRC lisp
 (set-prefix-key (kbd "C-M-H-s-z"))
+#+END_SRC
   Calls the set-prefix-key function (and sets a new keyboard prefix)
 ** 1.6 Init File
   Like other window managers, StumpWM’s configuration and startup state can be controlled by an
@@ -286,227 +291,137 @@ handling. StumpWM’s default prefix key is C-t.
 [[2.3 Modifiers]]
 ** 2.1 List of Default Keybindings
   The following is a list of keybindings.
-C-t d
-  Select the window with the corresponding digit d
-
-C-t C-d
-  Pull the window with the corresponding digit d into the current frame
-
-C-t n
-C-t C-n
-C-t Space
+*** C-t d
+  Select the window with the corresponding digit /d/
+*** C-t C-d
+  Pull the window with the corresponding digit /d/ into the current frame
+*** C-t n | C-t C-n | C-t Space
   Go to the next window in the window list
-
-C-t p
-C-t C-p
+*** C-t p | C-t C-p
   Go to the previous window in the window list
-
-C-t '
+*** C-t '
   Go to a window by name
-
-C-t "
+*** C-t "
   Select a window from a list and focus the window.
-
-C-t C-g
+*** C-t C-g
   Abort the current command. This is useful if you accidentally hit C-t
-
-C-t w
+*** C-t w
   List all the windows
-
-C-t i
+*** C-t i
   Display information about the current window.
-
-C-t f
+*** C-t f
   Select a frame by number
-
-C-t s
+*** C-t s
   Split current frame vertically
-
-C-t S
+*** C-t S
   Split current frame horizontally
-C-t k
-C-t C-k
+*** C-t k | C-t C-k
   Sends a kill message to the current frame and the running program.
-
-C-t K
+*** C-t K
   Kills the current frame and running program; like a kill -9.
-
-C-t c
-C-t C-c
+*** C-t c | C-t C-c
   Run an X terminal; by default xterm
-
-C-t e
-C-t C-e
+*** C-t e | `C-t C-e
   Run Emacs or raise it if it is already running.
-
-C-t t
+*** C-t t
   Sends a C-t to the frame; this is useful for applications like Firefox which make heavy use of
 C-t (in Firefox’s case, for opening a new tab). This is similar to how GNU screen uses C-a a.
-
-C-t w
-C-t C-w
+*** C-t w | C-t C-w
   Prints out a list of the windows, their number, and their name.
-
-C-t b
-C-t C-b
+*** C-t b | C-t C-b
   Banish the mouse point to the lower right corner of the screen.
-
-C-t a
-C-t C-a
+*** C-t a  | C-t C-a
   Display the current time and date, much like the Unix command date.
-
-C-t C-t
+*** C-t C-t
   Switch to the last window to have focus in the current frame.
-
-C-t !
+*** C-t !
   Prompt for a shell command to run via ‘/bin/sh’. All output is discarded.
-
-C-t R
+*** C-t R
   If the screen is split into multiple frames, one split will be undone. If there is only one split,
 the effect will be the same as C-t Q.
-
-C-t o
-C-t TAB
+*** C-t o | C-t TAB
   If the screen is split into multiple frames, focus shifts to the next frame, where it cycles to the
 right and then down; analogous to C-x o in Emacs.
-
-C-t F
+*** C-t F
   Display “Current Frame” in the frame which has focus.
-
-C-t ;
+*** C-t ;
    Opens the input box. StumpWM commands can be run from here, and the input history moved through.
-
-C-t :
+*** C-t :
   Opens the input box, but all things typed in here will be sent to the Common Lisp interpreter where
 they will be ran as Lisp programs; thus, input should be valid Common Lisp.
-
-C-t C-h
-C-t ?
+*** C-t C-h | C-t ?
   The help.
-
-C-t -
+*** C-t -
   Hide all frames and show the root window.
-
-C-t Q
+*** C-t Q
   Removes all splits and maximizes the frame with focus.
-C-t Up
-C-t Down
-C-t Left
-C-t Right
+*** C-t Up | C-t Down | C-t Left | C-t Right
   Shift focus to an adjacent frame in the specified direction. C-t Up will shift focus up, if possible,
 C-t Down will shift downwards, etc.
-
-C-t v
+*** C-t v
   Prints out the version of the running StumpWM.
-
-C-t #
+*** C-t #
   Toggle the mark on the current window
-
-C-t m
-C-t C-m
+*** C-t m | C-t C-m
   Display the last message. Hitting this keybinding again displays the message before that, and so on.
-
-C-t l
-C-t C-l
-  redisplay the current window and force it to take up the entire frame.
-
-C-t G
+*** C-t l | C-t C-l
+  Redisplay the current window and force it to take up the entire frame.
+*** C-t G
   Display all groups and windows in each group. For more information see Groups.
-
-C-t Fn
-  Jump to the corresponding group n. C-t F1 jumps to group 1 and so on.
-
-C-t g g
+*** C-t Fn
+  Jump to the corresponding group /n/. C-t F1 jumps to group 1 and so on.
+*** C-t g g
   Show the list of groups.
-
-C-t g c
+*** C-t g c
   Create a new group.
-
-C-t g n
-C-t g C-n
-C-t g SPC
-C-t g C-SPC
+*** C-t g n | C-t g C-n | C-t g SPC | C-t g C-SPC
   Go to the next group in the list.
-
-C-t g N
+*** C-t g N
   Go to the next group in the list and bring the current window along.
-
-C-t g p
-C-t g C-p
+*** C-t g p | C-t g C-p
   Go to the previous group in the list.
-
-C-t g P
+*** C-t g P
   Go to the previous group in the list and bring the current window along.
-
-C-t g '
+*** C-t g '
   Select a group by name or by number.
-
-C-t g "
+*** C-t g "
   Select a group from a list and switch to it.
-
-C-t g m
+*** C-t g m
   Move the current window to the specified group.
-
-C-t g k
+*** C-t g k
   Kill the current group. All windows are merged into the next group.
-
-C-t g A
-C-t g r
+*** C-t g A | C-t g r
   Change the current group’s name.
-
-C-t g d
-  Go to the group with digit d. C-t g 1 jumps to group 1 and so on.
-
-C-t +
+*** C-t g d
+  Go to the group with digit /d/. C-t g 1 jumps to group 1 and so on.
+*** C-t +
   Make frames the same height or width in the current frame’s subtree.
-
-C-t h k
+*** C-t h k
   Describe the specified key binding.
-
-C-t h f
+*** C-t h f
   Describe the specified function.
-
-C-t h v
+*** C-t h v
   Describe the specified variable.
-
-C-t h w
+*** C-t h w
   List all key sequences that are bound to the specified command
-
-C-t h c
+*** C-t h c
   Describe the specified command.
 ** 2.2 Binding Keys
-Function: define-key map key command
-
-  Add a keybinding mapping for the key, key, to the command, command, in the specified keymap.
-If command is nil, remove an exising binding. For example,
+*** Functions
+**** define-key /map key command/
+  Add a keybinding mapping for the key, /key/, to the command, /command/, in the specified keymap.
+If /command/ is nil, remove an exising binding. For example,
 
   #+BEGIN_SRC lisp
   (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-z") "echo Zzzzz...")
   #+END_SRC
   Now when you type C-t C-z, you’ll see the text “Zzzzz...” pop up.
-
-Function: undefine-key map key
-
+**** undefine-key /map key/
   Clear the key binding in the specified keybinding.
-
-Function: kbd keys
-
+**** kbd /keys/
   This compiles a key string into a key structure used by ‘define-key’, ‘undefine-key’,
 ‘set-prefix-key’ and others.
-
-Command: set-prefix-key key
-
-  Change the stumpwm prefix key to KEY.
-
-  #+BEGIN_SRC lisp
-  (stumpwm:set-prefix-key (stumpwm:kbd "C-M-H-s-z"))
-  #+END_SRC
-
-  This will change the prefix key to <Control> + <Meta> + <Hyper> + <Super> + the <z> key.
-By most standards, a terrible prefix key but it makes a great example.
-
-Function: make-sparse-keymap
-
+**** make-sparse-keymap
   Create an empty keymap. If you want to create a new list of bindings in the key binding
 tree, this is where you start. To hang frame related bindings off C-t C-f one might use the
 following code:
@@ -521,26 +436,27 @@ following code:
 
   (stumpwm:define-key stumpwm:*root-map* (stumpwm:kbd "C-f") '*my-frame-bindings*)
   #+END_SRC
+*** Commands
+**** set-prefix-key /key/
+  Change the stumpwm prefix key to KEY.
 
-Variable: *root-map*
+  #+BEGIN_SRC lisp
+  (stumpwm:set-prefix-key (stumpwm:kbd "C-M-H-s-z"))
+  #+END_SRC
 
-  This is the keymap by default bound to C-t. It is known as the prefix map.
-
-Variable: *top-map*
-
-  The top level key map. This is where you’ll find the binding for the prefix map.
-
-Variable: *groups-map*
-
-  The keymap that group related key bindings sit on. It is bound to C-t g by default.
-
-Variable: *exchange-window-map*
-
-  The keymap that exchange-window key bindings sit on. It is bound to C-t x by default.
-
-Command: bind key command
-
+  This will change the prefix key to <Control> + <Meta> + <Hyper> + <Super> + the <z> key.
+By most standards, a terrible prefix key but it makes a great example.
+**** bind /key command/
   Hang a key binding off the escape key.
+*** Variables
+**** *root-map*
+  This is the keymap by default bound to C-t. It is known as the /prefix/ map.
+**** *top-map*
+  The top level key map. This is where you’ll find the binding for the /prefix/ map.
+**** *groups-map*
+  The keymap that group related key bindings sit on. It is bound to C-t g by default.
+**** *exchange-window-map*
+  The keymap that exchange-window key bindings sit on. It is bound to C-t x by default.
 ** 2.3 Modifiers
   Many users have had some difficulty with setting up modifiers for StumpWM keybindings.
 This is caused by a combination of how StumpWM handles modifiers and the default modifiers
@@ -652,7 +568,7 @@ to automate setting the Hyper key when you start X.
   (define-key *top-map* (kbd "H-Right") "gnext")
   (define-key *top-map* (kbd "H-TAB") "other")
   #+END_SRC
-  Since essentially no programs have Hyper bindings, you can safely bind commands to the *top-map*.
+  Since essentially no programs have Hyper bindings, you can safely bind commands to the /*top-map*/.
 * 3. Commands
   If you’ve used Emacs before you’ll find the distinction between commands and functions familiar.
 Commands are simply functions that can be bound to keys and executed interactively from StumpWM’s
@@ -737,58 +653,41 @@ the next command, which only functions in tile groups, is defined this way:
   #+END_SRC
 ** 3.2 StumpWM Types
   All command arguments must be of a defined “StumpWM type”. The following types are pre-defined:
-
-:y-or-n
+*** /:y-or-n/
   A yes or no question returning T or NIL.
-
-:variable
+*** /:variable/
   A lisp variable
-
-:function
+*** /:function/
   A lisp function
-
-:command
+*** /:command/
   A stumpwm command as a string.
-
-:key-seq
+*** /:key-seq/
   A key sequence starting from *TOP-MAP*
-
-:window-number
+*** /:window-number/
   An existing window number
-
-:number
+*** /:number/
   An integer number
-
-:string
+*** /:string/
   A string
-
-:key
+*** /:key/
   A single key chord
-
-:window-name
+*** /:window-name/
   An existing window’s name
-
-:direction
+*** /:direction/
   A direction symbol. One of :UP :DOWN :LEFT :RIGHT
-
-:gravity
+*** /:gravity/
   A gravity symbol. One of :center :top :right :bottom :left :top-right :top-left :bottom-right :bottom-left
-
-:group
+*** /:group/
   An existing group
-
-:frame
+*** /:frame/
   A frame
-
-:shell
+*** /:shell/
   A shell command
-
-:rest
+*** /:rest/
   The rest of the input yes to be parsed.
-
-:module
+*** /:module/
   An existing stumpwm module
-
+*** Additional
   Additional types can be defined using the macro define-stumpwm-type. Emacs users who are
 accustomed to writing more complicated interactive declarations using "(interactive (list …))"
 forms will find that similar logic can be put into StumpWM type definitions. The macro is
@@ -863,13 +762,13 @@ cases, and let the command handle that.
   (define-key *root-map* (kbd "R") "smarty right")
   #+END_SRC
 * 4. Message and Input Bar
-Command: echo string
+** Commands
+*** echo string
   Display string in the message bar.
-
-Command: colon &optional initial-input
+*** colon &optional initial-input
   Read a command from the user. initial-text is optional. When supplied, the text
 will appear in the prompt.
-
+** Sections
 [[4.1 Customizing The Bar]]
 [[4.2 Using The Input Bar]]
 [[4.3 Programming The Message Bar]]
@@ -997,145 +896,365 @@ Input functions are passed this structure as their first argument.
 **** *input-map*
   This is the keymap containing all input editing key bindings.
 * 5. Windows
-Command: next
+** Commands
+*** next
+  Go to the next window in the window list.
+*** prev
+  Go to the previous window in the window list.
+*** delete-window &optional (window (current-window))
+  Delete a window. By default delete the current window. This is a request sent to the window. The window’s client may decide not to grant the request or may not be able to if it is unresponsive.
+*** kill-window &optional (window (current-window))
+  Tell X to disconnect the client that owns the specified window. Default to the current window. if delete-window didn’t work, try this.
+*** echo-windows &optional (fmt *window-format*) (group
+  (current-group)) (windows (group-windows group)) Display a list of managed windows. The optional argument fmt can be used to override the default window formatting.
+*** other-window &optional (group (current-group))
+  Switch to the window last focused.
+*** pull-hidden-next
+  Pull the next hidden window into the current frame.
+*** pull-hidden-previous
+  Pull the next hidden window into the current frame.
+*** pull-hidden-other
+  Pull the last focused, hidden window into the current frame.
+*** pull-from-windowlist
+  Pulls a window selected from the list of windows. This allows a behavior similar to Emacs’ switch-to-buffer when selecting another window.
+*** renumber nt &optional (group (current-group))
+  Change the current window’s number to the specified number. If another window is using the number, then the windows swap numbers. Defaults to current group.
+*** meta key
+  Send a fake key to the current window. key is a typical StumpWM key, like C-M-o.
+*** select-window query
+  Switch to the first window that starts with query.
+*** select-window-by-number num &optional (group (current-group))
+  Find the window with the given number and focus it in its frame.
+*** title title
+  Override the current window’s title.
+*** windowlist &optional (fmt *window-format*) window-list
+  Allow the user to select a window from the list of windows and focus the selected window. For information of menu bindings See section Menus. The optional argument fmt can be specified to override the default window formatting. The optional argument window-list can be provided to show a custom window list (see windowlist-by-class). The default window list is the list of all window in the current group. Also note that the default window list is sorted by number and if the windows-list is provided, it is shown unsorted (as-is).
+*** windowlist-by-class &optional (fmt *window-format-by-class*)
+  Allow the user to select a window from the list of windows (sorted by class) and focus the selected window. For information of menu bindings See section Menus. The optional argument fmt can be specified to override the default window formatting. This is a simple wrapper around the command windowlist.
+*** fullscreen
+  Toggle the fullscreen mode of the current widnow. Use this for clients with broken (non-NETWM) fullscreen implemenations, such as any program using SDL.
+*** info &optional (fmt *window-info-format*)
+  Display information about the current window.
+*** refresh
+  Refresh current window without changing its size.
+*** redisplay
+  Refresh current window by a pair of resizes, also make it occupy entire frame.
+** Variables
+*** *window-format*
+  This variable decides how the window list is formatted. It is a string with the following formatting options:
 
-    Go to the next window in the window list.
+  %n
+    Substitutes the windows number translated via *window-number-map*, if there are more windows than *window-number-map* then will use the window-number.
 
-Command: prev
+  %s
+    Substitute the window’s status. * means current window, + means last window, and - means any other window.
 
-    Go to the previous window in the window list.
+  %t
+    Substitute the window’s name.
 
-Command: delete-window &optional (window (current-window))
+  %c
+    Substitute the window’s class.
 
-    Delete a window. By default delete the current window. This is a request sent to the window. The window’s client may decide not to grant the request or may not be able to if it is unresponsive.
+  %i
+    Substitute the window’s resource ID.
 
-Command: kill-window &optional (window (current-window))
+  %m
+    Draw a # if the window is marked.
 
-    Tell X to disconnect the client that owns the specified window. Default to the current window. if delete-window didn’t work, try this.
+  Note, a prefix number can be used to crop the argument to a specified size. For instance, ‘%20t’ crops the window’s title to 20 characters.
+*** *window-info-format*
+  The format used in the info command. *window-format* for formatting details.
+*** *window-name-source*
+  This variable controls what is used for the window’s name. The default is :title.
 
-Command: echo-windows &optional (fmt *window-format*) (group
+  :title
+    Use the window’s title given to it by its owner.
 
-    (current-group)) (windows (group-windows group)) Display a list of managed windows. The optional argument fmt can be used to override the default window formatting.
+  :class
+    Use the window’s resource class.
 
-Command: other-window &optional (group (current-group))
+  :resource-name
+    Use the window’s resource name.
+***  *new-window-prefered-frame*
+  nil
+** Sections
+[[5.1 Window Marks]]
+[[5.2 Customizing Window Appearance]]
+[[5.3 Controlling Raise And Map Requests]]
+[[5.4 Programming With Windows]]
+[[5.5 Rule Based Window Placement]]
+[[5.6 Window Selection Expressions]]
+** 5.1 Window Marks
+Windows can be marked. A marked window has a # beside it in the window list. Some commands operate only on marked windows.
 
-    Switch to the window last focused.
+Command: mark
 
-Command: pull-hidden-next
+    Toggle the current window’s mark.
 
-    Pull the next hidden window into the current frame.
+Command: clear-window-marks &optional (group (current-group)) (windows
 
-Command: pull-hidden-previous
+    (group-windows group)) Clear all marks in the current group.
 
-    Pull the next hidden window into the current frame.
+Command: pull-marked
 
-Command: pull-hidden-other
+    Pull all marked windows into the current frame and clear the marks.
+** 5.2 Customizing Window Appearance
+Variable: *maxsize-border-width*
 
-    Pull the last focused, hidden window into the current frame.
+    The width in pixels given to the borders of windows with maxsize or ratio hints.
 
-Command: pull-from-windowlist
+Variable: *transient-border-width*
 
-    Pulls a window selected from the list of windows. This allows a behavior similar to Emacs’ switch-to-buffer when selecting another window.
+    The width in pixels given to the borders of transient or pop-up windows.
 
-Command: renumber nt &optional (group (current-group))
+Variable: *normal-border-width*
 
-    Change the current window’s number to the specified number. If another window is using the number, then the windows swap numbers. Defaults to current group.
+    The width in pixels given to the borders of regular windows.
 
-Command: meta key
+Variable: *window-border-style*
 
-    Send a fake key to the current window. key is a typical StumpWM key, like C-M-o.
+    This controls the appearance of the border around windows. valid values are:
 
-Command: select-window query
+    :thick
 
-    Switch to the first window that starts with query.
+        All space within the frame not used by the window is dedicated to the border.
+    :thin
 
-Command: select-window-by-number num &optional (group (current-group))
+        Only the border width as controlled by *maxsize-border-width* *normal-border-width* and *transient-border-width* is used as the border. The rest is filled with the unfocus color.
+    :tight
 
-    Find the window with the given number and focus it in its frame.
+        The same as :thin but the border surrounds the window and the wasted space within the frame is not obscured, revealing the background.
+    :none
 
-Command: title title
+        Like :tight but no border is ever visible.
 
-    Override the current window’s title.
+    After changing this variable you may need to call sync-all-frame-windows to see the change.
 
-Command: windowlist &optional (fmt *window-format*) window-list
+See Colors for an explanation of how to set these color variables.
 
-    Allow the user to select a window from the list of windows and focus the selected window. For information of menu bindings See section Menus. The optional argument fmt can be specified to override the default window formatting. The optional argument window-list can be provided to show a custom window list (see windowlist-by-class). The default window list is the list of all window in the current group. Also note that the default window list is sorted by number and if the windows-list is provided, it is shown unsorted (as-is).
+Function: set-win-bg-color color
 
-Command: windowlist-by-class &optional (fmt *window-format-by-class*)
+    Set the background color of the window. The background color will only be visible for windows with size increment hints such as ‘emacs’ and ‘xterm’.
 
-    Allow the user to select a window from the list of windows (sorted by class) and focus the selected window. For information of menu bindings See section Menus. The optional argument fmt can be specified to override the default window formatting. This is a simple wrapper around the command windowlist.
+Function: set-focus-color color
 
-Command: fullscreen
+    Set the border color for focused windows. This is only used when there is more than one frame.
 
-    Toggle the fullscreen mode of the current widnow. Use this for clients with broken (non-NETWM) fullscreen implemenations, such as any program using SDL.
+Function: set-unfocus-color color
 
-Command: info &optional (fmt *window-info-format*)
+    Set the border color for windows without focus. This is only used when there is more than one frame.
 
-    Display information about the current window.
+Function: set-float-focus-color color
 
-Command: refresh
+    Set the border color for focused windows in a float group.
 
-    Refresh current window without changing its size.
+Function: set-float-unfocus-color color
 
-Command: redisplay
+    Set the border color for windows without focus in a float group.
 
-    Refresh current window by a pair of resizes, also make it occupy entire frame.
+Function: set-normal-gravity gravity
 
-Variable: *window-format*
+    Set the default gravity for normal windows. Possible values are :center :top :left :right :bottom :top-left :top-right :bottom-left and :bottom-right.
 
-    This variable decides how the window list is formatted. It is a string with the following formatting options:
+Function: set-maxsize-gravity gravity
 
-    %n
+    Set the default gravity for maxsize windows.
 
-        Substitutes the windows number translated via *window-number-map*, if there are more windows than *window-number-map* then will use the window-number.
-    %s
+Function: set-transient-gravity gravity
 
-        Substitute the window’s status. * means current window, + means last window, and - means any other window.
-    %t
+    Set the default gravity for transient/pop-up windows.
 
-        Substitute the window’s name.
-    %c
+Command: gravity gravity
 
-        Substitute the window’s class.
-    %i
+    Set a window’s gravity within its frame. Gravity controls where the window will appear in a frame if it is smaller that the frame. Possible values are:
 
-        Substitute the window’s resource ID.
-    %m
+    center
+    top
+    right
+    bottom
+    left
+    top-right
+    top-left
+    bottom-right
+    bottom-left
+** 5.3 Controlling Raise And Map Requests
 
-        Draw a # if the window is marked.
+It is sometimes handy to deny a window’s request to be focused. The following variables determine such behavior.
 
-    Note, a prefix number can be used to crop the argument to a specified size. For instance, ‘%20t’ crops the window’s title to 20 characters.
+A map request occurs when a new or withdrawn window requests to be mapped for the first time.
 
-Variable: *window-info-format*
+A raise request occurs when a client asks the window manager to give an existing window focus.
 
-    The format used in the info command. *window-format* for formatting details.
+Variable: *deny-map-request*
 
-Variable: *window-name-source*
+    A list of window properties that stumpwm should deny matching windows’ requests to become mapped for the first time.
 
-    This variable controls what is used for the window’s name. The default is :title.
+Variable: *deny-raise-request*
 
-    :title
+    Exactly the same as *deny-map-request* but for raise requests.
 
-        Use the window’s title given to it by its owner.
-    :class
+    Note that no denial message is displayed if the window is already visible.
 
-        Use the window’s resource class.
-    :resource-name
+Variable: *suppress-deny-messages*
 
-        Use the window’s resource name.
+    For complete focus on the task at hand, set this to T and no raise/map denial messages will be seen.
 
-Variable: *new-window-prefered-frame*
+Some examples follow.
 
-    nil
 
-5.1 Window Marks
-5.2 Customizing Window Appearance
-5.3 Controlling Raise And Map Requests
-5.4 Programming With Windows
-5.5 Rule Based Window Placement
-5.6 Window Selection Expressions
+;; Deny the firefox window from taking focus when clicked upon.
+(push '(:class "gecko") stumpwm:*deny-raise-request*)
+
+;; Deny all map requests
+(setf stumpwm:*deny-map-request* t)
+
+;; Deny transient raise requests
+(push '(:transient) stumpwm:*deny-map-request*)
+
+;; Deny the all windows in the xterm class from taking focus.
+(push '(:class "Xterm") stumpwm:*deny-raise-request*)
+** 5.4 Programming With Windows
+
+Macro: define-window-slot attr
+
+    Create a new window attribute and corresponding get/set functions.
+
+Function: window-send-string string &optional (window (current-window))
+
+    Send the string of characters to the current window as if they’d been typed.
+
+Variable: *default-window-name*
+
+    The name given to a window that does not supply its own name.
+
+** 5.5 Rule Based Window Placement
+
+Macro: define-frame-preference target-group &rest frame-rules
+
+    Create a rule that matches windows and automatically places them in a specified group and frame. Each frame rule is a lambda list:
+
+
+    (frame-number raise lock &key create restore dump-name class instance type role title)
+
+    frame-number
+
+        The frame number to send matching windows to
+    raise
+
+        When non-nil, raise and focus the window in its frame
+    lock
+
+        When this is nil, this rule will only match when the current group matches target-group. When non-nil, this rule matches regardless of the group and the window is sent to target-group. If lock and raise are both non-nil, then stumpwm will jump to the specified group and focus the matched window.
+    create
+
+        When non-NIL the group is created and eventually restored when the value of create is a group dump filename in *DATA-DIR*. Defaults to NIL.
+    restore
+
+        When non-NIL the group is restored even if it already exists. This arg should be set to the dump filename to use for forced restore. Defaults to NIL
+    class
+
+        The window’s class must match class.
+    instance
+
+        The window’s instance/resource name must match instance.
+    type
+
+        The window’s type must match type.
+    role
+
+        The window’s role must match role.
+    title
+
+        The window’s title must match title.
+
+Function: clear-window-placement-rules
+
+    Clear all window placement rules.
+
+Command: remember lock title
+
+    Make a generic placement rule for the current window. Might be too specific/not specific enough!
+
+Command: forget
+
+    Forget the window placement rule that matches the current window.
+
+Command: dump-window-placement-rules file
+
+    Dump *window-placement-rules* to FILE.
+
+Command: restore-window-placement-rules file
+
+    Restore *window-placement-rules* from FILE.
+** 5.6 Window Selection Expressions
+
+Window Selection Expressions (WSE) were inspired by SQL. The intent is to allow writing consise code to select the windows you need and to act upon them (or just to get the list of selected windows). The implementation includes a set of (hopefully) consistent consisely-named wrappers for the StumpWM functionality useful for window set description and the act-on-matching-windows macro that encapsulates the logic of iterating over a window set.
+
+If we had SQL in StumpWM, we would write select window_id from windows as w where w.title = 'XTerm'. WSE chooses to be more Lisp-style and instead uses (act-on-matching-windows (w) (titled-p w "XTerm") w)
+
+The act-on-matching-windows function also allows performing some actions, for example getting all the windows titled XTerm into the current group: (act-on-matching-windows (w) (titled-p w "XTerm") (pull-w w))
+
+Command: move-windows-to-group windows &optional (arggroup nil)
+
+    Move all windows from the list to the group
+
+Macro: act-on-matching-windows (var &optional (range (quote (current-screen)))) condition &rest code
+
+    Run code on all windows matching condition; var is the shared lambda variable. Range can be any screen/group/frame or :screen/:group/:frame for the current instance. Condition is just the code to evaluate.
+
+Command: pull-w w &optional g
+
+    Pull the window w: to the current group or to the specified group g.
+
+Command: titled-p w title
+
+    Check whether window title of the window w is equal to the string title.
+
+Command: title-re-p w tre
+
+    Check whether the window title of the window w matches the regular expression tre.
+
+Command: classed-p w class
+
+    Check whether the window class of the window w is equal to the string class.
+
+Command: class-re-p w cre
+
+    Check whether the window class of the window w matches the regular expression cre.
+
+Command: typed-p w type
+
+    Check whether the window type of the window w is equal to the string type.
+
+Command: type-re-p w tre
+
+    Check whether the window type of the window w matches the regular expression tre.
+
+Command: roled-p w role
+
+    Check whether the window role of the window w is equal to the string role.
+
+Command: role-re-p w rre
+
+    Check whether the window role of the window w matches the regular expression rre.
+
+Command: resed-p w res
+
+    Check whether the window resource of the window w is equal to the string res.
+
+Command: res-re-p w rre
+
+    Check whether the window resource of the window w matches the regular expression rre.
+
+Command: grouped-p w &optional name
+
+    Check whether the window w belongs to the group name or the current group if name is not specified.
+
+Command: in-frame-p w &optional f
+
+    Check whether the window w belongs to the frame f or to the current frame if the frame is not specified.
+
 * 6. Frames
-
 Frames contain windows. All windows exist within a frame.
 
 Those used to ratpoison will notice that this differs from ratpoison’s window pool, where windows and frames are not so tightly connected.
@@ -1249,8 +1368,80 @@ Variable: *new-frame-action*
 
         The last focused window that is not currently visible is placed in the frame. This is the default.
 
-6.1 Interactively Resizing Frames
-6.2 Frame Dumping
+[[6.1 Interactively Resizing Frames]]
+[[6.2 Frame Dumping]]
+** 6.1 Interactively Resizing Frames
+
+There is a mode called iresize that lets you interactively resize the current frame. To enter the mode use the iresize command or type <C-t r>.
+
+The following keybindings apply to the mode:
+
+C-p
+Up
+k
+
+    Shrink the frame vertically.
+C-n
+Down
+j
+
+    Expand the frame vertically.
+C-f
+Right
+l
+
+    Expand the frame horizontally.
+C-b
+Left
+h
+
+    Shrink the frame horizontally.
+C-g
+ESC
+
+    Abort the interactive resize. NOTE: This currently doesn’t work.
+RET
+
+    Select the highlighted option.
+
+Command: iresize
+
+    Start the interactive resize mode. A new keymap specific to resizing the current frame is loaded. Hit <C-g>, <RET>, or <ESC> to exit.
+
+Command: abort-iresize
+
+    Exit from the interactive resize mode.
+
+Command: exit-iresize
+
+    Exit from the interactive resize mode.
+
+Variable: *resize-increment*
+
+    Number of pixels to increment by when interactively resizing frames.
+** 6.2 Frame Dumping
+
+The configuration of frames and groups can be saved and restored using the following commands.
+
+Command: dump-desktop-to-file file
+
+    Dumps the frames of all groups of all screens to the named file
+
+Command: dump-group-to-file file
+
+    Dumps the frames of the current group of the current screen to the named file.
+
+Command: dump-screen-to-file file
+
+    Dumps the frames of all groups of the current screen to the named file
+
+Command: restore-from-file file
+
+    Restores screen, groups, or frames from named file, depending on file’s contents.
+
+Command: place-existing-windows
+
+    Re-arrange existing windows according to placement rules.
 * 7. The Mode Line
 The mode line is a bar that runs across either the top or bottom of a head and is used to display information. By default the mode line displays the list of windows, similar to the output C-t w produces.
 
@@ -1442,8 +1633,34 @@ Command: sother
 
     Go to the last screen.
 
-9.1 External Monitors
-9.2 Programming With Screens
+[[9.1 External Monitors]]
+[[9.2 Programming With Screens]]
+** 9.1 External Monitors
+
+StumpWM will attempt to detect external monitors (via xdpyinfo) at startup. StumpWM refers to each monitor as a head. Heads are logically contained by screens. In a dual-monitor configuration, there will be one screen with two heads. Non-rectangular layouts are supported (frames will not be created in the ’dead zone’.) And message windows will be displayed on the current head–that is, the head to which the currently focused frame belongs.
+
+In addition, StumpWM listens for XRandR events and re-configures the heads to match the new monitor configuration. Occasionally StumpWM will miss an XRandR event, use refresh-heads to synchronize the head configuration.
+
+Command: refresh-heads &optional (screen (current-screen))
+
+    Refresh screens in case a monitor was connected, but a ConfigureNotify event was snarfed by another program.
+** 9.2 Programming With Screens
+
+Function: current-screen
+
+    Return the current screen.
+
+Function: screen-current-window screen
+
+    Return the current window on the specified screen
+
+Function: current-window
+
+    Return the current window on the current screen
+
+Variable: *screen-list*
+
+    The list of screens managed by stumpwm.
 * 10. Interacting With Unix
 
 Command: run-shell-command cmd &optional collect-output-p
@@ -1466,7 +1683,7 @@ Function: getenv var
 
     Return the value of the environment variable.
 
-Function: (setf getenv) val var
+*** (setf getenv) val var
 
     Set the value of the environment variable, var to val.
 * 11. Interacting With X11
@@ -1736,13 +1953,110 @@ Macro: defprogram-shortcut name &key (command (string-downcase (string name))) (
 Variable: *initializing*
 
     True when starting stumpwm. Use this variable in your rc file to run code that should only be executed once, when stumpwm starts up and loads the rc file.
+** Sections
+[[12.1 Menus]]
+[[12.2 StumpWM’s Data Directory]]
+[[12.3 Debugging StumpWM]]
+[[12.4 Sending a Bug Report]]
+[[12.5 Timers]]
+[[12.6 Getting Help]]
+** 12.1 Menus
 
-12.1 Menus
-12.2 StumpWM’s Data Directory
-12.3 Debugging StumpWM
-12.4 Sending a Bug Report
-12.5 Timers
-12.6 Getting Help
+Some commands present the options in a menu. The following are the menu key bindings:
+
+C-p
+Up
+k
+
+    Highlight the previous menu option.
+C-n
+Down
+j
+
+    Highlight the next menu option.
+C-g
+ESC
+
+    Abort the menu.
+RET
+
+    Select the highlighted option.
+** 12.2 StumpWM’s Data Directory
+
+If you want to store StumpWM data between sessions, the recommended method is to store them in ‘~/.stumpwm.d/’. StumpWM supplies some functions to make doing this easier.
+
+Variable: *data-dir*
+
+    The directory used by stumpwm to store data between sessions.
+
+Function: data-dir-file name &optional type
+
+    Return a pathname inside stumpwm’s data dir with the specified name and type
+
+Macro: with-data-file (s file &rest keys &key (if-exists supersede) &allow-other-keys) &body body
+
+    Open a file in StumpWM’s data directory. keyword arguments are sent directly to OPEN. Note that IF-EXISTS defaults to :supersede, instead of :error.
+** 12.3 Debugging StumpWM
+
+Variable: *debug-level*
+
+    Set this variable to a number > 0 to turn on debugging. The greater the number the more debugging output.
+
+Variable: *debug-stream*
+
+    This is the stream debugging output is sent to. It defaults to *error-output*. It may be more convenient for you to pipe debugging output directly to a file.
+
+Function: redirect-all-output file
+
+    Elect to redirect all output to the specified file. For instance, if you want everything to go to ~/.stumpwm.d/debug-output.txt you would do:
+
+
+    (redirect-all-output (data-dir-file "debug-output" "txt"))
+** 12.4 Sending a Bug Report
+While StumpWM’s code-base is quite mature, it still contains some bugs. If you encounter one here are some guidelines for making sure the developers can fix it:
+
+    Include a procedure for reproducing the bug/bad behavior. Ideally this will include numbered steps starting with instructions on how you start stumpwm. Also include what the expected behavior was.
+    Be as detailed as possible. Then add more detail!
+    Make sure its not something you introduced by using an empty ‘.xinitrc’ containing only ’exec /path/to/stumpwm’.
+    Make sure the bug is present even when ‘.stumwmrc’ is empty.
+    If you are using the git version, include the hash of the master branch, or better include the commit when you started to notice the bug.
+    If you have code that fixes the bug, then open a pull request at https://github.com/stumpwm/stumpwm/compare/.
+    If you don’t have code to fix the bug, then open an issue at https://github.com/stumpwm/stumpwm/issues/new.
+** 12.5 Timers
+
+StumpWM has a timer system similar to that of Emacs.
+
+Function: run-with-timer secs repeat function &rest args
+
+    Perform an action after a delay of SECS seconds. Repeat the action every REPEAT seconds, if repeat is non-nil. SECS and REPEAT may be reals. The action is to call FUNCTION with arguments ARGS.
+
+Function: cancel-timer timer
+
+    Remove TIMER from the list of active timers.
+
+Function: timer-p timer
+
+    Return T if TIMER is a timer structure.
+** 12.6 Getting Help
+Command: describe-key keys
+
+    Either interactively type the key sequence or supply it as text. This command prints the command bound to the specified key sequence.
+
+Command: describe-variable var
+
+    Print the online help associated with the specified variable.
+
+Command: describe-function fn
+
+    Print the online help associated with the specified function.
+
+Command: where-is cmd
+
+    Print the key sequences bound to the specified command.
+
+Command: modifiers
+
+    List the modifiers stumpwm recognizes and what MOD-X it thinks they’re on.
 * 13. Colors
 When specifying a color, it is possible to use its X11 Color Name (usually in the file ‘/etc/X11/rgb.txt’). You can also use a six digit hex string prefixed by a ’#’ character in the same way that you can specify colors in HTML.
 
@@ -1807,7 +2121,34 @@ The default colors are made to resemble the 16 VGA colors and are:
 7 white
 
 There are only 8 colors by default but 10 available digits. The last two digits are left up to the user. Behind The Scenes Look At Colors for information on customizing colors.
-13.1 Behind The Scenes Look At Colors
+[[13.1 Behind The Scenes Look At Colors]]
+** 13.1 Behind The Scenes Look At Colors
+
+Color indexes are stored in *colors* as a list. The default list of colors leave 2 slots for the user to choose. If you’d like to use ‘Papaya Whip’ and ‘Dark Golden Rod 3’ you might eval the following:
+
+
+(setf *colors* (append *colors*
+                       (list "PapayaWhip"
+                             "DarkGoldenRod3")))
+(update-color-map (current-screen))
+
+Of course, you can change all the colors if you like.
+
+Function: parse-color-string string
+
+    Parse a color-coded string into a list of strings and color modifiers
+
+Function: uncolorify string
+
+    Remove any color markup in STRING
+
+Variable: *colors*
+
+    Eight colors by default. You can redefine these to whatever you like and then call (update-color-map).
+
+Function: update-color-map screen
+
+    Read *colors* and cache their pixel colors for use when rendering colored text.
 * 14. Hooks
 
 StumpWM exports a number of hooks you can use to add customizations; like hooks in Emacs, you add to a hook with the add-hook function. for example:
@@ -1905,7 +2246,6 @@ Hook: *post-command-hook*
 
     Called after a command is called. It is called with 1 argument: the command as a symbol.
 * 15. Modules
-
 A module is a ASDF system that adds additional functionality to StumpWM. StumpWM searches for modules in the *data-dir*‘/modules’ directory. By default this is ‘~/.stumpwm.d/modules’.
 
 Officially supported modules exist in a separate repository within the StumpWM organization on github. You can install the latest copy by issuing make install-modules from StumpWM’s root source directory. This will run:
@@ -1937,11 +2277,208 @@ Function: find-module name
 
     nil
 
-15.1 Writing Modules
+[[15.1 Writing Modules]]
+** 15.1 Writing Modules
+
+Make sure to read Hacking. If you are familiar with writing lisp packages for ASDF then you can jump in and get started. In either case, quicklisp ships a quickproject package that makes setting up a new module very easy. After installing quicklisp (see the README.md for a link):
+
+We’re going to put our new module in the ‘modules/’ directory of *data-dir* so that it will be immediately loadable by stumpwm.
+
+First make the directory ‘new-module’, then from a REPL issue:
+
+
+(ql:quickload "quickproject")
+(quickproject:make-project #p"~/.stumpwm.d/modules/new-module" :depends-on '(stumpwm) :name "new-module")
+
+This will create:
+
+
+  -rw-rw-r--  1 dave dave   68 Apr  6 19:38 package.lisp
+  -rw-rw-r--  1 dave dave   53 Mar 16  2014 README.txt
+  -rw-rw-r--  1 dave dave  271 Mar 16  2014 new-module.asd
+  -rw-rw-r--  1 dave dave 1.8K Apr  6 17:51 new-module.lisp
+
+The file ‘new-module.lisp’ will contain the actual implementation of your module. ASDF requires two other files in order to understand how to load and compile your module. They are ‘new-module.asd’ and ‘package.lisp’. In our example, ‘new-module.asd’ should contain:
+
+
+(asdf:defsystem #:new-module
+  :serial t
+  :description "Describe new-module here"
+  :author "Anne N. O'Nymous"
+  :license "GPLv3"
+  :depends-on (#:stumpwm)
+  :components ((:file "package")
+               (:file "new-module"))) ; any other files you make go here
+
+The ‘package.lisp’ will contain:
+
+
+(defpackage #:new-module
+  (:use #:cl :stumpwm))
+
+With these two files defined, and the implementation written in ‘new-module.lisp’, you should be able to load your module.
+
+Before we load it, we have to add the path to our *load-path*. This can be accomplished by running the following from a REPL:
+
+
+(stumpwm:add-to-load-path "~/.stumpwm.d/modules/new-module")
+
+You can also run this interactively with C-t ;, which is bound to the colon command.
+
+Because we’ve put our module in a sub-directory of the default *module-dir*, it will automatically get added to the *load-path* the next time StumpWM starts. If you choose to develop your module somewhere else (e.g. ‘~/quicklisp/local-projects’), then you’ll have add
+
+
+(add-to-load-path "~/quicklisp/local-projects/new-module")
+
+to your ‘.stumpwmrc’.
+
+When you’ve finished writing your module, you can distribute it however you see fit. If it becomes very popular, or you would like the StumpWM devs to maintain it (and they agree), you can have your module merged with the stumpwm-contrib repository on github, just open a pull request to start the discussion.
 * 16. Hacking
-For those of you who have worked on Free Software projects before, this part should probably be fairly intuitive.
-16.1 Hacking: General Advice
-16.2 Hacking: Using git with StumpWM
-16.3 Sending Patches
+  For those of you who have worked on Free Software projects before, this part should probably be fairly intuitive.
+[[16.1 Hacking: General Advice]]
+[[16.2 Hacking: Using git with StumpWM]]
+[[16.3 Sending Patches]]
+** 16.1 Hacking: General Advice
+    Pay attention to file names and contents. If you’re making changes to mode-line related code, don’t put it in ‘core.lisp’. If you’re introducing some completely new featureset, consider putting all of the new code in a new file.
+    Does a command need to be user-visible (“interactive”) or is it just called by other commands?
+        If it’s not going to be user-visible, you can just use the familiar (defun foo () ...) syntax.
+        If you want the command to be used interactively, you use StumpWM’s defcommand syntax, as in the examples below.
+
+
+        (defcommand test (foo bar)
+           ((:string "How you're going to prompt for variable foo: ")
+            (:number "How you want to prompt for variable bar: "))
+           "This command is a test"
+           (body...))
+
+        (defcommand test2 () ()
+           "This is also a test"
+           (body...))
+
+        (defcommand title (args) (interactive-args)
+           "Doc string"
+           (body...))
+
+        So basically, inside the first set of parentheses after the function name, you specify what (if any) arguments will be passed to the command. The second set of parentheses tells StumpWM how to get those arguments if they’re not explicitly passed to the command. For example,
+
+
+        ((:string "What do you want to do: "))
+
+        will read a string from the input the user provides. The quoted text is the prompt the user will see. Of course, if you were to, say, call the command test, as defined above, from another piece of code, it wouldn’t give the prompt as long as you fed it arguments.
+    Note that all commands defined using the defcommand syntax are available both to be called with C-t ; and from within other lisp programs, as though they had been defun-ned (which, in fact, they have).
+    Any code that depends on external libraries or programs that some users might not have installed should be packaged as a module and placed in the ‘*data-dir*/modules/’ directory.
+    Don’t be afraid to submit your patches to the StumpWM mailing list! It may not immediately make it into the official git repository, but individual users might find it useful and apply it to their own setup, or might be willing to offer suggestions on how to improve the code.
+    Remember: StumpWM is designed to run on many lisp systems. If you must use code specific to one or the other, at the very least warn people that it only works with one lisp implementation. Better yet, figure out how to do it in the other distribution and write a statement like this:
+
+
+    #+clisp
+    (your-clisp-code)
+    #+sbcl
+    (your-sbcl-code)
+
+    #to wrap the code for each lisp. Of course, the best option is to find a way to use the same code for clisp and SBCL.
+** 16.2 Hacking: Using git with StumpWM
+For quite a while now, StumpWM has been using the git version control system for development. If you’re one using one of the official releases, you can get the bleeding-edge source code from the official git repository with a single command:
+
+
+$ git clone git@github.com:stumpwm/stumpwm.git
+
+After this, you’ll have a complete git repository, along with the complete revision history since the switch. Feel free to play around; git has some important features that actually make this safe!
+
+Before we get to that stuff, though, you’re going to want to tell git about yourself so that your information is included in your commits and patches. The very minimum you’re going to want to do is:
+
+
+$ git config --global user.name "Anne N. O'Nymous"
+$ git config --global user.email "anonymous@foo.org"
+
+Be sure to check out the manual for git-config–there are several options you might want to set, such as enabling colorized output or changing the editor and pager you use when making commits and viewing logs.
+
+For the sake of argument, let’s say you want to make some major changes to both ‘user.lisp’ and ‘core.lisp’, add a file called ‘DANGEROUS_EXPERIMENT_DO_NOT_USE_OR_ELSE.lisp’, and remove the manual because you’re too 1337 for such things. However, you don’t want to break your entire StumpWM setup and start over. Thankfully, you don’t have to. Before you get started, issue this command from the stumpwm directory:
+
+
+$ git checkout -b experimental
+
+You should now find yourself in a new branch, called experimental. To confirm this, type git branch; there should be an asterisk next to the branch you’re currently viewing. At any time, you can type git checkout master to return to your master branch, and at any time you can have as many branches of the project as you like. If you want to create a new branch based not on the master branch but on your experimental branch, for example, you’d type:
+
+
+$ git checkout -b new-experiment experimental
+
+This will place you in a newly-created branch called “new-experiment” which should be identical to your experimental branch as of the last commit (more on that soon). If you’re actually typing out the directions, switch back to your old experimental branch like so:
+
+
+$ git checkout experimental
+
+Anyway, now that you have a new branch, create that new file with the long name, which I’ll just call ‘danger.lisp’ for brevity. Make whatever changes you want to it, and when you’re done, tell git about your new file.
+
+
+$ git add dangerous.lisp
+
+Now, let’s pretend you’re done making changes. Tell git you’re done for now:
+
+
+$ git commit -a
+
+This will open up a prompt in your editor of choice for you to describe your changes. Try to keep the first line short, and then add more explanation underneath (for an example, run the command git log and take a look at some of the longer commit explanations). Save that file and then do this:
+
+
+$ git checkout master
+$ ls
+
+Then look for your new file. It’s not there! That’s because you’ve done all of your work in another branch, which git is currently hiding from you so that you can “check out” the branch called “master.” All is as it should be–your master repository is still safe.
+
+
+$ git checkout experimental
+
+Now, delete ‘manual.lisp’ and ‘stumpwm.texi’. That’s right. Wipe them off the face of the Earth, or at least off the hard drive of your computer. When you’re done, you don’t have to tell git you’ve deleted them; it’ll figure it out on its own (though things may not compile properly unless you edit ‘Makefile.in’ and ‘stumpwm.asd’. Anyway, go ahead and edit ‘core.lisp’ and ‘user.lisp’. Really break ’em. Run free! When you’re done, do another commit, as above, and give it a stupid title like “lolz i b0rked stUmpwm guys wTF!?!?!!111!” Now try to compile. Just try. It won’t work. If it does, you’re some kind of savant or something. Keep up the good work. If you’ve actually managed to break StumpWM like you were supposed to, never fear! You have two options at this point.
+
+One is to go back to the master branch (with another git checkout) and just delete your experimental branch, like so:
+
+
+$ git branch -D
+
+The “-D” means to force a delete, even if the changes you’ve made aren’t available elsewhere. A “-d” means to delete the branch if and only if you’ve merged the changes in elsewhere.
+
+The other option is to create patches for each of your commits so far, delete the branch, and then apply any working/wanted patches in a new branch. Create your patches (after committing) like so:
+
+
+$ git format-patch -o patches origin
+
+(Before doing that you can review your changes with git log origin..)
+
+You can also use the format-patch command to create a patch of working code to send in to the mailing list.
+
+A developer might ask you to try out something they’re working on. To fetch their master branch, you’d do this:
+
+
+$ git remote add -f -m master -t master foo git://bar.org/~foo/stumpwm
+
+Here, “foo” is the shorthand name you’ll use to refer to that repository in the future. To checkout a local copy of that repository, you’d then do
+
+
+$ git checkout --track -b foo-master foo/master
+
+Later you could use git pull foo to update while looking at that branch (and note that git pull with no arguments, in the master branch, will update your StumpWM from the official repository).
+
+Finally, if you want to move your experimental changes into your master branch, you’d checkout your master branch and run:
+
+
+$ git merge experimental
+
+If there are file conflicts, git diff will show you where they are; you have to fix them by hand. When you’re done, do another
+
+
+$ git commit -a
+
+to finalize the changes to your master branch. You can then delete your experimental branch. Alternately, you can wait until your changes (assuming you sent them in) make it into the official repository before deleting your experimental branch.
+** 16.3 Sending Patches
+While patches are still welcome on the mailing list, StumpWM’s development has mostly migrated to github’s issue tracker. This means you can open a pull request to submit a patch to StumpWM. The following guidelines apply to pull requests and patches sent to the mailing list.
+
+    Make sure it applies clean to the main git repository
+    Ensure that you aren’t introducing tabs, extra blank lines, or whitespace at the end of lines.
+    Ensure your patch doesn’t contain irrelevant indenting or reformatting changes.
+    Try to make your patch address a single issue. If your patch changes two unrelated issues, break them into two seperate patches that can stand on their own.
+    Don’t send intermediate patches. When you’re working on a feature you might make several commits to your local repository as you refine it and work out the bugs. When it’s polished and ready to ship, send it as one patch! Sometimes it makes sense to send it as multiple patches if each patch contains a discrete feature or bug fix that can stand on its own. If one of your patches changes code that was added or modified in an earlier patch, consider merging them together and sending them as one.
 * Command and Function Index
+** (
+[[(setf getenv) val var]]
 * Variable Index
