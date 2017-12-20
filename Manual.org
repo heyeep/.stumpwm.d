@@ -1442,77 +1442,75 @@ one disappears, and on a timer. This variable controls how many seconds elapse
 between each update. If this variable is changed while the modeline is visible,
 you must toggle the modeline to update timer.
 * 8. Groups
-Groups in StumpWM are more commonly known as virtual desktops or workspaces. Why not create a new term for it?
-
-Command: gnew name
-
-    Create a new group with the specified name. The new group becomes the current group. If name begins with a dot (“.”) the group new group will be created in the hidden state. Hidden groups have group numbers less than one and are invisible to from gprev, gnext, and, optionally, groups and vgroups commands.
-
-Command: gnew-float name
-
-    Create a floating window group with the specified name and switch to it.
-
-Command: gnewbg-float name
-
-    Create a floating window group with the specified name, but do not switch to it.
-
-Command: gnewbg name
-
-    Create a new group but do not switch to it.
-
-Command: gnext
-
-    Cycle to the next group in the group list.
-
-Command: gprev
-
-    Cycle to the previous group in the group list.
-
-Command: gnext-with-window
-
-    Cycle to the next group in the group list, taking the current window along.
-
-Command: gprev-with-window
-
-    Cycle to the previous group in the group list, taking the current window along.
-
-Command: gother
-
-    Go back to the last group.
-
-Command: gmerge from
-
-    Merge from into the current group. from is not deleted.
-
-Command: groups &optional (fmt *group-format*)
-
-    Display the list of groups with their number and name. *group-format* controls the formatting. The optional argument fmt can be used to override the default group formatting.
-
-Command: vgroups &optional gfmt wfmt
-
-    Like groups but also display the windows in each group. The optional arguments gfmt and wfmt can be used to override the default group formatting and window formatting, respectively.
-
-Command: gselect to-group
-
-    Select the first group that starts with substring. substring can also be a number, in which case gselect selects the group with that number.
-
-Command: gmove to-group
-
-    Move the current window to the specified group.
-
-Command: gkill
-
-    Kill the current group. All windows in the current group are migrated to the next group.
-
-Command: grename name
-
-    Rename the current group.
-
-Command: grouplist &optional (fmt *group-format*)
-
-    Allow the user to select a group from a list, like windowlist but for groups
-
-8.1 Customizing Groups
+  Groups in StumpWM are more commonly known as /virtual desktops/ or /workspaces/.
+Why not create a new term for it?
+** Commands
+*** gnew /name/
+  Create a new group with the specified name. The new group becomes the current
+group. If /name/ begins with a dot (“.”) the group new group will be created in the
+hidden state. Hidden groups have group numbers less than one and are invisible
+to from gprev, gnext, and, optionally, groups and vgroups commands.
+*** gnew-float /name/
+  Create a floating window group with the specified name and switch to it.
+*** gnewbg-float /name/
+  Create a floating window group with the specified name, but do not switch to it.
+*** gnewbg /name/
+  Create a new group but do not switch to it.
+*** gnext
+  Cycle to the next group in the group list.
+*** gprev
+  Cycle to the previous group in the group list.
+*** gnext-with-window
+  Cycle to the next group in the group list, taking the current window along.
+*** gprev-with-window
+  Cycle to the previous group in the group list, taking the current window along.
+*** gother
+  Go back to the last group.
+*** gmerge /from/
+  Merge /from/ into the current group. /from/ is not deleted.
+*** groups /&optional (fmt *group-format*)/
+  Display the list of groups with their number and name. /*group-format*/ controls
+the formatting. The optional argument /fmt/ can be used to override the default
+group formatting.
+*** vgroups /&optional gfmt wfmt/
+  Like groups but also display the windows in each group. The optional arguments
+/gfmt/ and /wfmt/ can be used to override the default group formatting and window
+formatting, respectively.
+*** gselect /to-group/
+  Select the first group that starts with /substring/. /substring/ can also be a
+number, in which case gselect selects the group with that number.
+*** gmove /to-group/
+  Move the current window to the specified group.
+*** gkill
+  Kill the current group. All windows in the current group are migrated to the next
+group.
+*** grename /name/
+  Rename the current group.
+*** grouplist /&optional (fmt *group-format*)/
+  Allow the user to select a group from a list, like windowlist but for groups
+** Sections
+[[8.1 Customizing Groups]]
+** 8.1 Customizing Groups
+*** Variables
+**** *group-formatters*
+  An alist of characters and formatter functions. The character can be used as a
+format character in /*group-format*/. When the character is encountered in the
+string, the corresponding function is called with a group as an argument. The
+functions return value is inserted into the string. If the return value isn’t a
+string it is converted to one using prin1-to-string.
+**** *group-format*
+  The format string that decides what information will show up in the group
+listing. The following format options are available:
+***** %n
+  Substitutes the group number translated via *group-number-map*, if there are
+more windows than *group-number-map* then will use the group-number.
+***** %s
+  The group’s status. Similar to a window’s status.
+***** %t
+  The group’s name.
+*** Functions
+**** current-group /&optional (screen (current-screen))/
+  Return the current group for the current screen, unless otherwise specified.
 * 9. Screens
 StumpWM handles multiple screens.
 
