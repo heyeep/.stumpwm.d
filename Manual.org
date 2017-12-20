@@ -1213,193 +1213,134 @@ if the frame is not specified.
 variable. Range can be any screen/group/frame or :screen/:group/:frame
 for the current instance. Condition is just the code to evaluate.
 * 6. Frames
-Frames contain windows. All windows exist within a frame.
+  Frames contain windows. All windows exist within a frame.
 
-Those used to ratpoison will notice that this differs from ratpoison’s window pool, where windows and frames are not so tightly connected.
+  Those used to ratpoison will notice that this differs from ratpoison’s
+window pool, where windows and frames are not so tightly connected.
+** Commands
+*** pull-window-by-number /n &optional (group (current-group))/
+  Pull window N from another frame into the current frame and focus it.
+*** hsplit /&optional (ratio 1/2)/
+  Split the current frame into 2 side-by-side frames.
+*** vsplit /&optional (ratio 1/2)/
+  Split the current frame into 2 frames, one on top of the other.
+*** remove-split &optional (group (current-group)) (frame(tile-group-current-frame group))
+  Remove the specified frame in the specified group (defaults to current
+group, current frame). Windows in the frame are migrated to the frame
+taking up its space.
+*** only
+  Delete all the frames but the current one and grow it to take up the
+entire head.
+*** curframe
+  Display a window indicating which frame is focused.
+*** fnext
+  Cycle through the frame tree to the next frame.
+*** sibling
+  Jump to the frame’s sibling. If a frame is split into two frames,
+these two frames are siblings.
+*** fother
+  Jump to the last frame that had focus.
+*** fselect /frame-number/
+  Display a number in the corner of each frame and let the user to
+select a frame by number. If /frame-number/ is specified, just jump
+to that frame.
+*** resize /width/ /height/
+  Resize the current frame by /width/ and /height/ pixels
+*** balance-frames
+  Make frames the same height or width in the current frame’s subtree.
+*** fclear
+  Clear the current frame.
+*** move-focus /dir/
+  Focus the frame adjacent to the current one in the specified direction.
+The following are valid directions:
 
-Command: pull-window-by-number n &optional (group (current-group))
+  up
+  down
+  left
+  right
+*** move-window /dir/
+  Just like move-focus except that the current is pulled along.
+*** next-in-frame
+  Go to the next window in the current frame.
+*** prev-in-frame
+  Go to the previous window in the current frame.
+*** other-in-frame
+  Go to the last accessed window in the current frame.
+*** echo-frame-windows /&optional (fmt *window-format*)/
+  Display a list of all the windows in the current frame.
+*** exchange-direction /dir &optional (win (current-window))/
+  Exchange the current window (by default) with the top window
+of the frame in specified direction. (bound to C-t x by default)
 
-    Pull window N from another frame into the current frame and focus it.
-
-Command: hsplit &optional (ratio 1/2)
-
-    Split the current frame into 2 side-by-side frames.
-
-Command: vsplit &optional (ratio 1/2)
-
-    Split the current frame into 2 frames, one on top of the other.
-
-Command: remove-split &optional (group (current-group)) (frame
-
-    (tile-group-current-frame group)) Remove the specified frame in the specified group (defaults to current group, current frame). Windows in the frame are migrated to the frame taking up its space.
-
-Command: only
-
-    Delete all the frames but the current one and grow it to take up the entire head.
-
-Command: curframe
-
-    Display a window indicating which frame is focused.
-
-Command: fnext
-
-    Cycle through the frame tree to the next frame.
-
-Command: sibling
-
-    Jump to the frame’s sibling. If a frame is split into two frames, these two frames are siblings.
-
-Command: fother
-
-    Jump to the last frame that had focus.
-
-Command: fselect frame-number
-
-    Display a number in the corner of each frame and let the user to select a frame by number. If frame-number is specified, just jump to that frame.
-
-Command: resize width height
-
-    Resize the current frame by width and height pixels
-
-Command: balance-frames
-
-    Make frames the same height or width in the current frame’s subtree.
-
-Command: fclear
-
-    Clear the current frame.
-
-Command: move-focus dir
-
-    Focus the frame adjacent to the current one in the specified direction. The following are valid directions:
-
-    up
-    down
-    left
-    right
-
-Command: move-window dir
-
-    Just like move-focus except that the current is pulled along.
-
-Command: next-in-frame
-
-    Go to the next window in the current frame.
-
-Command: prev-in-frame
-
-    Go to the previous window in the current frame.
-
-Command: other-in-frame
-
-    Go to the last accessed window in the current frame.
-
-Command: echo-frame-windows &optional (fmt *window-format*)
-
-    Display a list of all the windows in the current frame.
-
-Command: exchange-direction dir &optional (win (current-window))
-
-    Exchange the current window (by default) with the top window of the frame in specified direction. (bound to C-t x by default)
-
-    up
-    down
-    left
-    right
-
-Variable: *min-frame-width*
-
-    The minimum width a frame can be. A frame will not shrink below this width. Splitting will not affect frames if the new frame widths are less than this value.
-
-Variable: *min-frame-height*
-
-    The minimum height a frame can be. A frame will not shrink below this height. Splitting will not affect frames if the new frame heights are less than this value.
-
-Variable: *new-frame-action*
-
-    When a new frame is created, this variable controls what is put in the new frame. Valid values are
-
-    :empty
-
-        The frame is left empty
-    :last-window
-
-        The last focused window that is not currently visible is placed in the frame. This is the default.
-
+  up
+  down
+  left
+  right
+** Variables
+*** *min-frame-width*
+  The minimum width a frame can be. A frame will not shrink below this
+width. Splitting will not affect frames if the new frame widths are
+less than this value.
+*** *min-frame-height*
+  The minimum height a frame can be. A frame will not shrink below this
+height. Splitting will not affect frames if the new frame heights are
+less than this value.
+*** *new-frame-action*
+  When a new frame is created, this variable controls what is put in
+the new frame. Valid values are
+**** :empty
+  The frame is left empty
+**** :last-window
+   The last focused window that is not currently visible is placed in
+the frame. This is the default.
+** Sections
 [[6.1 Interactively Resizing Frames]]
 [[6.2 Frame Dumping]]
 ** 6.1 Interactively Resizing Frames
-
-There is a mode called iresize that lets you interactively resize the current frame. To enter the mode use the iresize command or type <C-t r>.
-
-The following keybindings apply to the mode:
-
-C-p
-Up
-k
-
-    Shrink the frame vertically.
-C-n
-Down
-j
-
-    Expand the frame vertically.
-C-f
-Right
-l
-
-    Expand the frame horizontally.
-C-b
-Left
-h
-
-    Shrink the frame horizontally.
-C-g
-ESC
-
-    Abort the interactive resize. NOTE: This currently doesn’t work.
-RET
-
-    Select the highlighted option.
-
-Command: iresize
-
-    Start the interactive resize mode. A new keymap specific to resizing the current frame is loaded. Hit <C-g>, <RET>, or <ESC> to exit.
-
-Command: abort-iresize
-
-    Exit from the interactive resize mode.
-
-Command: exit-iresize
-
-    Exit from the interactive resize mode.
-
-Variable: *resize-increment*
-
-    Number of pixels to increment by when interactively resizing frames.
+  There is a mode called iresize that lets you interactively resize the
+current frame. To enter the mode use the iresize command or type <C-t r>.
+*** Mode
+  The following keybindings apply to the mode:
+**** C-p | Up | k
+  Shrink the frame vertically.
+**** C-n | Down | j
+  Expand the frame vertically.
+**** C-f | Right | l
+  Expand the frame horizontally.
+**** C-b | Left | h
+  Shrink the frame horizontally.
+**** C-g |  ESC
+  Abort the interactive resize. NOTE: This currently doesn’t work.
+**** RET
+  Select the highlighted option.
+*** Commands
+**** iresize
+  Start the interactive resize mode. A new keymap specific to resizing
+the current frame is loaded. Hit <C-g>, <RET>, or <ESC> to exit.
+**** abort-iresize
+  Exit from the interactive resize mode.
+**** exit-iresize
+  Exit from the interactive resize mode.
+*** Variables
+**** *resize-increment*
+  Number of pixels to increment by when interactively resizing frames.
 ** 6.2 Frame Dumping
-
-The configuration of frames and groups can be saved and restored using the following commands.
-
-Command: dump-desktop-to-file file
-
-    Dumps the frames of all groups of all screens to the named file
-
-Command: dump-group-to-file file
-
-    Dumps the frames of the current group of the current screen to the named file.
-
-Command: dump-screen-to-file file
-
-    Dumps the frames of all groups of the current screen to the named file
-
-Command: restore-from-file file
-
-    Restores screen, groups, or frames from named file, depending on file’s contents.
-
-Command: place-existing-windows
-
-    Re-arrange existing windows according to placement rules.
+  The configuration of frames and groups can be saved and restored
+using the following commands.
+*** Commands
+**** dump-desktop-to-file /file/
+  Dumps the frames of all groups of all screens to the named file
+**** dump-group-to-file /file/
+  Dumps the frames of the current group of the current screen to
+the named file.
+**** dump-screen-to-file /file/
+  Dumps the frames of all groups of the current screen to the named
+file
+**** restore-from-file /file/
+  Restores screen, groups, or frames from named file, depending on
+file’s contents.
+****  place-existing-windows
+  Re-arrange existing windows according to placement rules.
 * 7. The Mode Line
 The mode line is a bar that runs across either the top or bottom of a head and is used to display information. By default the mode line displays the list of windows, similar to the output C-t w produces.
 
