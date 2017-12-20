@@ -1878,97 +1878,100 @@ This command prints the command bound to the specified key sequence.
   List the modifiers stumpwm recognizes and what MOD-X it thinks
 they’re on.
 * 13. Colors
-When specifying a color, it is possible to use its X11 Color Name (usually in the file ‘/etc/X11/rgb.txt’). You can also use a six digit hex string prefixed by a ’#’ character in the same way that you can specify colors in HTML.
+  When specifying a color, it is possible to use its X11 Color Name (usually in
+he file ‘/etc/X11/rgb.txt’). You can also use a six digit hex string prefixed
+by a ’#’ character in the same way that you can specify colors in HTML.
 
-All text printed by stumpwm is run through a coloring engine before being displayed. All color commands start with a ‘^’ (caret) character and apply to all text after it.
+  All text printed by stumpwm is run through a coloring engine before being
+displayed. All color commands start with a ‘^’ (caret) character and apply to
+all text after it.
+** Commands
+*** ^0-9
+  A caret followed by a single digit number changes the foreground color to
+the specified color. A ‘*’ can be used to specify the normal color. See
+the color listing below.
+*** ^0-90-9
+  A caret followed by two digits sets the foreground and background color. The
+first digit refers to the foreground color and the second digit to the background
+color. A ‘*’ can be used in place of either digit to specify the normal color.
+See the color listing below.
+*** ^B
+  Turn on bright colors.
+*** ^b
+  Turn off bright colors.
+*** ^n
+  Use the normal background and foreground color.
+*** ^R
+   Reverse the foreground and background colors.
+*** ^r
+  Turn off reverse colors.
+*** ^[
+  Push the current colors onto the color stack. The current colors remain
+unchanged.
+*** ^]
+  Pop the colors off the color stack.
+*** ^>
+  Align the rest of the line to the right of the window.
+*** ^f<n>
+  Sets the current font to the font at index n in the screen’s font list.
+*** ^(<modifier> &rest arguments)
+  Allows for more complicated color settings: <modifier> can be one
+of :fg, :bg, :reverse, :bright, :push, :pop, :font and :>. The arguments for
+each modifier differ:
+  - :fg and :bg take a color as an argument, which can either be a numeric index
+    into the color map or a hexadecimal color in the form of "#fff" or "#ffffff".
+  - :reverse and :bright take either t or nil as an argument. T enables the
+    setting and nil disables it.
+  - :push and :pop take no arguments. :push pushes the current settings onto the
+    color stack, leaving the current settings intact. :pop pops color settings
+    off the stack, updating the current settings.
+  - :font takes an integer that represents an index into the screen’s list of
+    fonts, or, possibly, a literal font object that can immediately be used. In a
+    string you’ll probably only want to specify an integer.
+  -:> takes no arguments. It triggers right-alignment for the rest of the line.
+*** ^^
+  Print a regular caret.
+** Default Colors
+  The default colors are made to resemble the 16 VGA colors and are:
 
-^0-9
+  0 black
+  1 red
+  2 green
+  3 yellow
+  4 blue
+  5 magenta
+  6 cyan
+  7 white
 
-    A caret followed by a single digit number changes the foreground color to the specified color. A ‘*’ can be used to specify the normal color. See the color listing below.
-^0-90-9
-
-    A caret followed by two digits sets the foreground and background color. The first digit refers to the foreground color and the second digit to the background color. A ‘*’ can be used in place of either digit to specify the normal color. See the color listing below.
-^B
-
-    Turn on bright colors.
-^b
-
-    Turn off bright colors.
-^n
-
-    Use the normal background and foreground color.
-^R
-
-    Reverse the foreground and background colors.
-^r
-
-    Turn off reverse colors.
-^[
-
-    Push the current colors onto the color stack. The current colors remain unchanged.
-^]
-
-    Pop the colors off the color stack.
-^>
-
-    Align the rest of the line to the right of the window.
-^f<n>
-
-    Sets the current font to the font at index n in the screen’s font list.
-^(<modifier> &rest arguments)
-
-    Allows for more complicated color settings: <modifier> can be one of :fg, :bg, :reverse, :bright, :push, :pop, :font and :>. The arguments for each modifier differ:
-
-        :fg and :bg take a color as an argument, which can either be a numeric index into the color map or a hexadecimal color in the form of "#fff" or "#ffffff".
-        :reverse and :bright take either t or nil as an argument. T enables the setting and nil disables it.
-        :push and :pop take no arguments. :push pushes the current settings onto the color stack, leaving the current settings intact. :pop pops color settings off the stack, updating the current settings.
-        :font takes an integer that represents an index into the screen’s list of fonts, or, possibly, a literal font object that can immediately be used. In a string you’ll probably only want to specify an integer.
-        :> takes no arguments. It triggers right-alignment for the rest of the line.
-
-^^
-
-    Print a regular caret.
-
-The default colors are made to resemble the 16 VGA colors and are:
-
-0 black
-1 red
-2 green
-3 yellow
-4 blue
-5 magenta
-6 cyan
-7 white
-
-There are only 8 colors by default but 10 available digits. The last two digits are left up to the user. Behind The Scenes Look At Colors for information on customizing colors.
+  There are only 8 colors by default but 10 available digits. The last two
+digits are left up to the user. [[13.1 Behind The Scenes Look At Colors]] for
+information on customizing colors.
+** Sections
 [[13.1 Behind The Scenes Look At Colors]]
 ** 13.1 Behind The Scenes Look At Colors
+  Color indexes are stored in *colors* as a list. The default list of colors
+eave 2 slots for the user to choose. If you’d like to use ‘Papaya Whip’ and
+‘Dark Golden Rod 3’ you might eval the following:
 
-Color indexes are stored in *colors* as a list. The default list of colors leave 2 slots for the user to choose. If you’d like to use ‘Papaya Whip’ and ‘Dark Golden Rod 3’ you might eval the following:
-
-
-(setf *colors* (append *colors*
-                       (list "PapayaWhip"
-                             "DarkGoldenRod3")))
-(update-color-map (current-screen))
-
-Of course, you can change all the colors if you like.
-
-Function: parse-color-string string
-
-    Parse a color-coded string into a list of strings and color modifiers
-
-Function: uncolorify string
-
-    Remove any color markup in STRING
-
-Variable: *colors*
-
-    Eight colors by default. You can redefine these to whatever you like and then call (update-color-map).
-
-Function: update-color-map screen
-
-    Read *colors* and cache their pixel colors for use when rendering colored text.
+  #+BEGIN_SRC lisp
+  (setf *colors* (append *colors*
+                         (list "PapayaWhip"
+                               "DarkGoldenRod3")))
+  (update-color-map (current-screen))
+  #+END_SRC
+  Of course, you can change all the colors if you like.
+*** Functions
+**** parse-color-string /string/
+  Parse a color-coded string into a list of strings and color modifiers
+**** uncolorify /string/
+  Remove any color markup in STRING
+**** update-color-map /screen/
+  Read *colors* and cache their pixel colors for use when rendering colored
+text.
+*** Variables
+**** *colors*
+  Eight colors by default. You can redefine these to whatever you like and
+then call (update-color-map).
 * 14. Hooks
 
 StumpWM exports a number of hooks you can use to add customizations; like hooks in Emacs, you add to a hook with the add-hook function. for example:
