@@ -1550,30 +1550,27 @@ event was snarfed by another program.
 **** *screen-list*
   The list of screens managed by stumpwm.
 * 10. Interacting With Unix
-
-Command: run-shell-command cmd &optional collect-output-p
-
-    Run the specified shell command. If collect-output-p is T then run the command synchonously and collect the output. Be careful. If the shell command doesn’t return, it will hang StumpWM. In such a case, kill the shell command to resume StumpWM.
-
-Function: programs-in-path &optional full-path (path (split-string (getenv PATH) :))
-
-    Return a list of programs in the path. if full-path is t then return the full path, otherwise just return the filename. path is by default the PATH evironment variable but can be specified. It should be a string containing each directory seperated by a colon.
-
-Function: pathname-is-executable-p pathname
-
-    Return T if the pathname describes an executable file.
-
-Variable: *shell-program*
-
-    The shell program used by run-shell-command.
-
-Function: getenv var
-
-    Return the value of the environment variable.
-
-*** (setf getenv) val var
-
-    Set the value of the environment variable, var to val.
+** Commands
+*** run-shell-command /cmd &optional collect-output-p/
+  Run the specified shell command. If /collect-output-p/ is T then run the
+command synchonously and collect the output. Be careful. If the shell
+command doesn’t return, it will hang StumpWM. In such a case, kill the
+shell command to resume StumpWM.
+** Functions
+*** programs-in-path /&optional full-path (path (split-string (getenv PATH) :))/
+  Return a list of programs in the path. if /full-path/ is /t/ then return the
+full path, otherwise just return the filename. /path/ is by default the PATH
+evironment variable but can be specified. It should be a string containing
+each directory seperated by a colon.
+*** pathname-is-executable-p /pathname/
+  Return T if the pathname describes an executable file.
+*** getenv /var/
+  Return the value of the environment variable.
+*** (setf getenv) /val var/
+  Set the value of the environment variable, /var/ to /val/.
+** Variables
+*** *shell-program*
+  The shell program used by run-shell-command.
 * 11. Interacting With X11
 
 Function: set-x-selection text &optional (selection primary)
@@ -2368,5 +2365,5 @@ While patches are still welcome on the mailing list, StumpWM’s development has
     Don’t send intermediate patches. When you’re working on a feature you might make several commits to your local repository as you refine it and work out the bugs. When it’s polished and ready to ship, send it as one patch! Sometimes it makes sense to send it as multiple patches if each patch contains a discrete feature or bug fix that can stand on its own. If one of your patches changes code that was added or modified in an earlier patch, consider merging them together and sending them as one.
 * Command and Function Index
 ** (
-[[(setf getenv) val var]]
+[[(setf getenv) /val var/]]
 * Variable Index
