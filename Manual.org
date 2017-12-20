@@ -1342,109 +1342,105 @@ file’s contents.
 ****  place-existing-windows
   Re-arrange existing windows according to placement rules.
 * 7. The Mode Line
-The mode line is a bar that runs across either the top or bottom of a head and is used to display information. By default the mode line displays the list of windows, similar to the output C-t w produces.
+  The mode line is a bar that runs across either the top or bottom of a
+head and is used to display information. By default the mode line displays
+the list of windows, similar to the output C-t w produces.
 
-Alternatively, external panel applications such as the GNOME panel and KDE’s kicker may be used. Simply starting one of these programs is enough to set it as the mode line of the head it would like to be on (if the panel is XRandR aware) or whichever head is available. In order to avoid problems displaying menus, configure your panel application for positioning at the top or bottom of the head rather than relying on *mode-line-position*
+  Alternatively, external panel applications such as the GNOME panel and
+KDE’s kicker may be used. Simply starting one of these programs is enough
+to set it as the mode line of the head it would like to be on (if the
+panel is XRandR aware) or whichever head is available. In order to avoid
+problems displaying menus, configure your panel application for
+positioning at the top or bottom of the head rather than relying
+on /*mode-line-position*/
 
-The mode line can be turned on and off with the mode-line command or the lisp function stumpwm:toggle-mode-line. Each head has its own mode line. For example:
+  The mode line can be turned on and off with the mode-line command or
+the lisp function stumpwm:toggle-mode-line. Each head has its own mode
+line. For example:
 
+  #+BEGIN_SRC lisp
+  ;; turn on/off the mode line for the current head only.
+  (stumpwm:toggle-mode-line (stumpwm:current-screen)
+                            (stumpwm:current-head))
+  #+END_SRC
+  The mode line is updated after every StumpWM command.
 
-;; turn on/off the mode line for the current head only.
-(stumpwm:toggle-mode-line (stumpwm:current-screen)
-                          (stumpwm:current-head))
+  To display the window list and the current date on the modeline,
+one might do the following:
 
-The mode line is updated after every StumpWM command.
+  #+BEGIN_SRC lisp
+  (setf stumpwm:*screen-mode-line-format*
+        (list "%w | "
+              '(:eval (stumpwm:run-shell-command "date" t))))
 
-To display the window list and the current date on the modeline, one might do the following:
+  (stumpwm:run-shell-command "date" t) runs the command date and returns itsoutput as a string.
+  #+END_SRC
 
+** Commands
+*** mode-line
+  A command to toggle the mode line visibility.
+** Functions
+**** toggle-mode-line /screen head &optional (format (quote *screen-mode-line-format*))/
+  Toggle the state of the mode line for the specified screen
+** Variables
+*** *screen-mode-line-format*
+  This variable describes what will be displayed on the modeline for each
+screen. Turn it on with the function TOGGLE-MODE-LINE or the mode-line
+command.
 
-(setf stumpwm:*screen-mode-line-format*
-      (list "%w | "
-            '(:eval (stumpwm:run-shell-command "date" t))))
+  It is a list where each element may be a string, a symbol, or a list.
 
-(stumpwm:run-shell-command "date" t) runs the command date and returns its output as a string.
+  For a symbol its value is used.
 
-Command: mode-line
+  For a list of the form (:eval FORM) FORM is evaluated and the result is
+used as a mode line element.
 
-    A command to toggle the mode line visibility.
+  If it is a string the string is printed with the following formatting options:
 
-Function: toggle-mode-line screen head &optional (format (quote *screen-mode-line-format*))
-
-    Toggle the state of the mode line for the specified screen
-
-Variable: *screen-mode-line-format*
-
-    This variable describes what will be displayed on the modeline for each screen. Turn it on with the function TOGGLE-MODE-LINE or the mode-line command.
-
-    It is a list where each element may be a string, a symbol, or a list.
-
-    For a symbol its value is used.
-
-    For a list of the form (:eval FORM) FORM is evaluated and the result is used as a mode line element.
-
-    If it is a string the string is printed with the following formatting options:
-
-    %h
-
-        List the number of the head the mode-line belongs to
-    %w
-
-        List all windows in the current group windows using *window-format*
-    %W
-
-        List all windows on the current head of the current group using *window-format*
-    %g
-
-        List the groups using *group-format*
-    %n
-
-        The current group’s name
-    %u
-
-        Using *window-format*, return a 1 line list of the urgent windows, space seperated.
-    %v
-
-        Using *window-format*, return a 1 line list of the windows, space separated. The currently focused window is highlighted with fmt-highlight. Any non-visible windows are colored the *hidden-window-color*.
-    %d
-
-        Using *time-modeline-string*, print the time.
-
-    A number of modules have been written that extends the possible formatting strings. See their documentation for details.
-
-The following variables control the color, position, and size of the mode line. See Colors for an explanation of how to set these color variables.
-
-Variable: *mode-line-position*
-
-    Specifies where the mode line is displayed. Valid values are :top and :bottom.
-
-Variable: *mode-line-border-width* 1
-
-    nil
-
-Variable: *mode-line-pad-x*
-
-    nil
-
-Variable: *mode-line-pad-y*
-
-    nil
-
-Variable: *mode-line-background-color*
-
-    nil
-
-Variable: *mode-line-foreground-color*
-
-    nil
-
-Variable: *mode-line-border-color*
-
-    nil
-
-Variable: *mode-line-timeout*
-
-    The modeline updates after each command, when a new window appears or an existing one disappears, and on a timer. This variable controls how many seconds elapse between each update. If this variable is changed while the modeline is visible, you must toggle the modeline to update timer.
-
+**** %h
+  List the number of the head the mode-line belongs to
+**** %w
+  List all windows in the current group windows using /*window-format*/
+**** %W
+  List all windows on the current head of the current group using /*window-format*/
+**** %g
+  List the groups using /*group-format*/
+**** %n
+  The current group’s name
+**** %u
+  Using /*window-format*/, return a 1 line list of the urgent windows, space
+seperated.
+**** %v
+  Using /*window-format*/, return a 1 line list of the windows, space separated. 
+The currently focused window is highlighted with fmt-highlight. Any non-visible 
+windows are colored the *hidden-window-color*.
+**** %d
+  Using /*time-modeline-string*/, print the time.
+**** A number
+  A number of modules have been written that extends the possible formatting strings.
+See their documentation for details.
+*** The following
+The following variables control the color, position, and size of the mode line.
+See [[13. Colors]] for an explanation of how to set these color variables.
+*** *mode-line-position*
+  Specifies where the mode line is displayed. Valid values are :top and :bottom.
+*** *mode-line-border-width* 1
+  nil
+*** *mode-line-pad-x*
+  nil
+*** *mode-line-pad-y*
+  nil
+*** *mode-line-background-color*
+  nil
+*** *mode-line-foreground-color*
+  nil
+*** *mode-line-border-color*
+  nil
+*** *mode-line-timeout*
+  The modeline updates after each command, when a new window appears or an existing
+one disappears, and on a timer. This variable controls how many seconds elapse
+between each update. If this variable is changed while the modeline is visible,
+you must toggle the modeline to update timer.
 * 8. Groups
 Groups in StumpWM are more commonly known as virtual desktops or workspaces. Why not create a new term for it?
 
