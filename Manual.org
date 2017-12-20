@@ -1973,101 +1973,78 @@ text.
   Eight colors by default. You can redefine these to whatever you like and
 then call (update-color-map).
 * 14. Hooks
+  StumpWM exports a number of hooks you can use to add customizations; like hooks
+in Emacs, you add to a hook with the add-hook function. for example:
 
-StumpWM exports a number of hooks you can use to add customizations; like hooks in Emacs, you add to a hook with the add-hook function. for example:
+  #+BEGIN_SRC lisp
+  (stumpwm:add-hook 'stumpwm:*new-window-hook* 'my-new-window-custos)
+  #+END_SRC
 
+  adds your my-new-window-custos function to the list of functions called when
+a new window appears.
+** Macros
+*** add-hook /hook fn/
+  Add function to the hook hook-variable. For example, to display a message
+whenever you switch frames:
 
-(stumpwm:add-hook 'stumpwm:*new-window-hook* 'my-new-window-custos)
+  #+BEGIN_SRC lisp
+  (defun my-rad-fn (to-frame from-frame)
+    (stumpwm:message "Mustard!"))
 
-adds your my-new-window-custos function to the list of functions called when a new window appears.
-
-Macro: add-hook hook fn
-
-    Add function to the hook hook-variable. For example, to display a message whenever you switch frames:
-
-
-    (defun my-rad-fn (to-frame from-frame)
-      (stumpwm:message "Mustard!"))
-
-    (stumpwm:add-hook stumpwm:*focus-frame-hook* 'my-rad-fn)
-
-Macro: remove-hook hook fn
-
-    Remove the specified function from the hook.
-
-The following hooks are available:
-
-Hook: *new-window-hook*
-
-    A hook called whenever a window is added to the window list. This includes a genuinely new window as well as bringing a withdrawn window back into the window list.
-
-Hook: *destroy-window-hook*
-
-    A hook called whenever a window is destroyed or withdrawn.
-
-Hook: *focus-window-hook*
-
-    A hook called when a window is given focus. It is called with 2 arguments: the current window and the last window (could be nil).
-
-Hook: *place-window-hook*
-
-    A hook called whenever a window is placed by rule. Arguments are window group and frame
-
-Hook: *start-hook*
-
-    A hook called when stumpwm starts.
-
-Hook: *internal-loop-hook*
-
-    A hook called inside stumpwm’s inner loop.
-
-Hook: *focus-frame-hook*
-
-    A hook called when a frame is given focus. The hook functions are called with 2 arguments: the current frame and the last frame.
-
-Hook: *new-frame-hook*
-
-    A hook called when a new frame is created. the hook is called with the frame as an argument.
-
-Hook: *message-hook*
-
-    A hook called whenever stumpwm displays a message. The hook function is passed any number of arguments. Each argument is a line of text.
-
-Hook: *top-level-error-hook*
-
-    Called when a top level error occurs. Note that this hook is run before the error is dealt with according to *top-level-error-action*.
-
-Hook: *focus-group-hook*
-
-    A hook called whenever stumpwm switches groups. It is called with 2 arguments: the current group and the last group.
-
-Hook: *key-press-hook*
-
-    A hook called whenever a key under *top-map* is pressed. It is called with 3 argument: the key, the (possibly incomplete) key sequence it is a part of, and command value bound to the key.
-
-Hook: *root-click-hook*
-
-    A hook called whenever there is a mouse click on the root window. Called with 4 arguments, the screen containing the root window, the button clicked, and the x and y of the pointer.
-
-Hook: *mode-line-click-hook*
-
-    Called whenever the mode-line is clicked. It is called with 4 arguments, the mode-line, the button clicked, and the x and y of the pointer.
-
-Hook: *urgent-window-hook*
-
-    A hook called whenever a window sets the property indicating that it demands the user’s attention
-
-Hook: *event-processing-hook*
-
-    A hook called inside stumpwm’s inner loop, before the default event processing takes place. This hook is run inside (with-event-queue ...).
-
-Hook: *pre-command-hook*
-
-    Called before a command is called. It is called with 1 argument: the command as a symbol.
-
-Hook: *post-command-hook*
-
-    Called after a command is called. It is called with 1 argument: the command as a symbol.
+  (stumpwm:add-hook stumpwm:*focus-frame-hook* 'my-rad-fn)
+  #+END_SRC
+*** remove-hook /hook fn/
+  Remove the specified function from the hook.
+** Hooks
+  The following hooks are available:
+*** *new-window-hook*
+  A hook called whenever a window is added to the window list. This includes a genuinely
+new window as well as bringing a withdrawn window back into the window list.
+*** *destroy-window-hook*
+  A hook called whenever a window is destroyed or withdrawn.
+*** *focus-window-hook*
+  A hook called when a window is given focus. It is called with 2 arguments: the current
+window and the last window (could be nil).
+*** *place-window-hook*
+  A hook called whenever a window is placed by rule. Arguments are window group and frame
+*** *start-hook*
+  A hook called when stumpwm starts.
+*** *internal-loop-hook*
+  A hook called inside stumpwm’s inner loop.
+*** *focus-frame-hook*
+  A hook called when a frame is given focus. The hook functions are called with
+2 arguments: the current frame and the last frame.
+*** *new-frame-hook*
+  A hook called when a new frame is created. the hook is called with the frame as
+an argument.
+*** *message-hook*
+  A hook called whenever stumpwm displays a message. The hook function is passed any
+number of arguments. Each argument is a line of text.
+*** *top-level-error-hook*
+  Called when a top level error occurs. Note that this hook is run before the error is
+dealt with according to *top-level-error-action*.
+*** *focus-group-hook*
+  A hook called whenever stumpwm switches groups. It is called with 2 arguments: the current
+group and the last group.
+*** *key-press-hook*
+  A hook called whenever a key under *top-map* is pressed. It is called with 3 argument: the
+key, the (possibly incomplete) key sequence it is a part of, and command value bound to the key.
+*** *root-click-hook*
+  A hook called whenever there is a mouse click on the root window. Called with 4 arguments,
+the screen containing the root window, the button clicked, and the x and y of the pointer.
+*** *mode-line-click-hook*
+  Called whenever the mode-line is clicked. It is called with 4 arguments, the mode-line,
+the button clicked, and the x and y of the pointer.
+*** *urgent-window-hook*
+  A hook called whenever a window sets the property indicating that it demands the
+user’s attention
+*** *event-processing-hook*
+  A hook called inside stumpwm’s inner loop, before the default event processing takes place.
+This hook is run inside (with-event-queue ...).
+*** *pre-command-hook*
+  Called before a command is called. It is called with 1 argument: the command as a symbol.
+*** *post-command-hook*
+  Called after a command is called. It is called with 1 argument: the command as a symbol.
 * 15. Modules
 A module is a ASDF system that adds additional functionality to StumpWM. StumpWM searches for modules in the *data-dir*‘/modules’ directory. By default this is ‘~/.stumpwm.d/modules’.
 
