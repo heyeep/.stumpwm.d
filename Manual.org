@@ -1512,48 +1512,43 @@ more windows than *group-number-map* then will use the group-number.
 **** current-group /&optional (screen (current-screen))/
   Return the current group for the current screen, unless otherwise specified.
 * 9. Screens
-StumpWM handles multiple screens.
-
-Command: snext
-
-    Go to the next screen.
-
-Command: sprev
-
-    Go to the previous screen.
-
-Command: sother
-
-    Go to the last screen.
-
+  StumpWM handles multiple screens.
+** Commands
+*** snext
+  Go to the next screen.
+*** sprev
+  Go to the previous screen.
+*** sother
+  Go to the last screen.
+** Sections
 [[9.1 External Monitors]]
 [[9.2 Programming With Screens]]
 ** 9.1 External Monitors
+  StumpWM will attempt to detect external monitors (via xdpyinfo) at startup.
+StumpWM refers to each monitor as a head. Heads are logically contained by
+screens. In a dual-monitor configuration, there will be one screen with two
+heads. Non-rectangular layouts are supported (frames will not be created in
+the ’dead zone’.) And message windows will be displayed on the current
+head–that is, the head to which the currently focused frame belongs.
 
-StumpWM will attempt to detect external monitors (via xdpyinfo) at startup. StumpWM refers to each monitor as a head. Heads are logically contained by screens. In a dual-monitor configuration, there will be one screen with two heads. Non-rectangular layouts are supported (frames will not be created in the ’dead zone’.) And message windows will be displayed on the current head–that is, the head to which the currently focused frame belongs.
-
-In addition, StumpWM listens for XRandR events and re-configures the heads to match the new monitor configuration. Occasionally StumpWM will miss an XRandR event, use refresh-heads to synchronize the head configuration.
-
-Command: refresh-heads &optional (screen (current-screen))
-
-    Refresh screens in case a monitor was connected, but a ConfigureNotify event was snarfed by another program.
+  In addition, StumpWM listens for XRandR events and re-configures the heads
+to match the new monitor configuration. Occasionally StumpWM will miss an
+XRandR event, use refresh-heads to synchronize the head configuration.
+*** Commands
+**** refresh-heads /&optional (screen (current-screen))/
+  Refresh screens in case a monitor was connected, but a ConfigureNotify
+event was snarfed by another program.
 ** 9.2 Programming With Screens
-
-Function: current-screen
-
-    Return the current screen.
-
-Function: screen-current-window screen
-
-    Return the current window on the specified screen
-
-Function: current-window
-
-    Return the current window on the current screen
-
-Variable: *screen-list*
-
-    The list of screens managed by stumpwm.
+*** Functions
+**** current-screen
+  Return the current screen.
+**** screen-current-window /screen/
+  Return the current window on the specified screen
+**** current-window
+  Return the current window on the current screen
+*** Variables
+**** *screen-list*
+  The list of screens managed by stumpwm.
 * 10. Interacting With Unix
 
 Command: run-shell-command cmd &optional collect-output-p
