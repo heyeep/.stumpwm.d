@@ -1578,263 +1578,216 @@ each directory seperated by a colon.
 *** get-x-selection /&optional timeout (selection primary)/
   Return the x selection no matter what client own it.
 * 12. Miscellaneous Commands
-
-The following is a list of commands that don’t really fit in any other section.
-
-Command: emacs
-
-    Start emacs unless it is already running, in which case focus it.
-
-Command: banish &optional where
-
-    Warp the mouse the lower right corner of the current head.
-
-Command: ratwarp x y
-
-    Warp the mouse to the specified location.
-
-Command: ratrelwarp dx dy
-
-    Warp the mouse by the specified amount from its current position.
-
-Command: ratclick &optional (button 1)
-
-    Simulate a pointer button event at the current pointer location. Note: this function is unlikely to work unless your X server and CLX implementation support XTEST.
-
-Command: echo-date
-
-    Display the date and time.
-
-Command: eval-line cmd
-
-    Evaluate the s-expression and display the result(s).
-
-Command: window-send-string string &optional (window (current-window))
-
-    Send the string of characters to the current window as if they’d been typed.
-
-Command: reload
-
-    Reload StumpWM using asdf.
-
-Command: loadrc
-
-    Reload the ‘~/.stumpwmrc’ file.
-
-Command: keyboard-quit
-
-Command: quit
-
-    Quit StumpWM.
-
-Command: restart-hard
-
-    Restart stumpwm. This is handy if a new stumpwm executable has been made and you wish to replace the existing process with it.
-
-    Any run-time customizations will be lost after the restart.
-
-Command: restart-soft
-
-    Soft Restart StumpWM. The lisp process isn’t restarted. Instead, control jumps to the very beginning of the stumpwm program. This differs from RESTART, which restarts the unix process.
-
-    Since the process isn’t restarted, existing customizations remain after the restart.
-
-Command: getsel
-
-    Echo the X selection.
-
-Command: putsel string
-
-    Stuff the string string into the X selection.
-
-Command: command-mode
-
-    Command mode allows you to type ratpoison commands without needing the <C-t> prefix. Keys not bound in StumpWM will still get sent to the current window. To exit command mode, type <C-g>.
-
-Command: copy-unhandled-error
-
-    When an unhandled error occurs, StumpWM restarts and attempts to continue. Unhandled errors should be reported to the mailing list so they can be fixed. Use this command to copy the unhandled error and backtrace to the X11 selection so you can paste in your email when submitting the bug report.
-
-Command: commands
-
-    List all available commands.
-
-Command: lastmsg
-
-    Display the last message. If the previous command was lastmsg, then continue cycling back through the message history.
-
-Command: list-window-properties
-
-    List all the properties of the current window and their values, like xprop.
-
-Function: run-commands &rest commands
-
-    Run each stumpwm command in sequence. This could be used if you’re used to ratpoison’s rc file and you just want to run commands or don’t know lisp very well. One might put the following in one’s rc file:
-
-
-    (stumpwm:run-commands
-      "escape C-z"
-      "exec firefox"
-      "split")
-
-Macro: defcommand name (&rest args) (&rest interactive-args) &body body
-
-    Create a command function and store its interactive hints in *command-hash*. The local variable %interactivep% can be used to check if the command was called interactively. If it is non-NIL then it was called from a keybinding or from the colon command.
-
-    The NAME argument can be a string, or a list of two symbols. If the latter, the first symbol names the command, and the second indicates the type of group under which this command will be usable. Currently, tile-group and floating-group are the two possible values.
-
-    INTERACTIVE-ARGS is a list of the following form: ((TYPE PROMPT) (TYPE PROMPT) ...)
-
-    each element in INTERACTIVE-ARGS declares the type and prompt for the command’s arguments.
-
-    TYPE can be one of the following:
-
-    :y-or-n
-
-        A yes or no question returning T or NIL.
-    :variable
-
-        A lisp variable
-    :function
-
-        A lisp function
-    :command
-
-        A stumpwm command as a string.
-    :key-seq
-
-        A key sequence starting from *TOP-MAP*
-    :window-number
-
-        An existing window number
-    :number
-
-        An integer number
-    :string
-
-        A string
-    :key
-
-        A single key chord
-    :window-name
-
-        An existing window’s name
-    :direction
-
-        A direction symbol. One of :UP :DOWN :LEFT :RIGHT
-    :gravity
-
-        A gravity symbol. One of :center :top :right :bottom :left :top-right :top-left :bottom-right :bottom-left
-    :group
-
-        An existing group
-    :frame
-
-        A frame
-    :shell
-
-        A shell command
-    :rest
-
-        The rest of the input yes to be parsed.
-    :module
-
-        An existing stumpwm module
-
-    Note that new argument types can be created with DEFINE-STUMPWM-TYPE.
-
-    PROMPT can be string. In this case, if the corresponding argument is missing from an interactive call, stumpwm will use prompt for its value using PROMPT. If PROMPT is missing or nil, then the argument is considered an optional interactive argument and is not prompted for when missing.
-
-    Alternatively, instead of specifying nil for PROMPT or leaving it out, an element can just be the argument type.
-
-Macro: define-stumpwm-type type (input prompt) &body body
-
-    Create a new type that can be used for command arguments. type can be any symbol.
-
-    When body is evaluated input is bound to the argument-line. It is passed to argument-pop, argument-pop-rest, etc. prompt is the prompt that should be used when prompting the user for the argument.
-
-
-    (define-stumpwm-type :symbol (input prompt)
-     (or (find-symbol (string-upcase
-    		     (or (argument-pop input)
-                             ;; Whitespace messes up find-symbol.
-    		         (string-trim " "
-    		           (completing-read (current-screen)
-    					  prompt
-    					  ;; find all symbols in the
-    					  ;;  stumpwm package.
-    					  (let (acc)
-    					    (do-symbols (s (find-package "STUMPWM"))
-    					      (push (string-downcase (symbol-name s)) acc))
-    					    acc)))
-                          (throw 'error "Abort.")))
-                      "STUMPWM")
-         (throw 'error "Symbol not in STUMPWM package")))
-
-    (defcommand "symbol" (sym) ((:symbol "Pick a symbol: "))
-      (message "~a" (with-output-to-string (s)
-    	          (describe sym s))))
-
-    This code creates a new type called :symbol which finds the symbol in the stumpwm package. The command symbol uses it and then describes the symbol.
-
-Function: run-or-raise cmd props &optional (all-groups *run-or-raise-all-groups*) (all-screens *run-or-raise-all-screens*)
-
-    Run the shell command, cmd, unless an existing window matches props. props is a property list with the following keys:
-
-    :class
-
-        Match the window’s class.
-    :instance
-
-        Match the window’s instance or resource-name.
-    :role
-
-        Match the window’s WM_WINDOW_ROLE.
-    :title
-
-        Match the window’s title.
-
-    By default, the global *run-or-raise-all-groups* decides whether to search all groups or the current one for a running instance. all-groups overrides this default. Similarily for *run-or-raise-all-screens* and all-screens.
-
-Function: run-or-pull cmd props &optional (all-groups *run-or-raise-all-groups*) (all-screens *run-or-raise-all-screens*)
-
-    Similar to run-or-raise, but move the matching window to the current frame instead of switching to the window.
-
-Variable: *run-or-raise-all-groups*
-
-    When this is T the run-or-raise function searches all groups for a running instance. Set it to NIL to search only the current group.
-
-Variable: *run-or-raise-all-screens*
-
-    When this is T the run-or-raise function searches all screens for a running instance. Set it to NIL to search only the current screen. If *run-or-raise-all-groups* is NIL this variable has no effect.
-
-Function: restarts-menu err
-
-    Display a menu with the active restarts and let the user pick one. Error is the error being recovered from. If the user aborts the menu, the error is re-signalled.
-
-Macro: with-restarts-menu &body body
-
-    Execute BODY. If an error occurs allow the user to pick a restart from a menu of possible restarts. If a restart is not chosen, resignal the error.
-
-Variable: *startup-message*
-
-    This is the message StumpWM displays when it starts. Set it to NIL to suppress.
-
-Variable: *suppress-abort-messages*
-
-    Suppress abort message when non-nil.
-
-Variable: *default-package*
-
-    This is the package eval reads and executes in. You might want to set this to :stumpwm if you find yourself using a lot of internal stumpwm symbols. Setting this variable anywhere but in your rc file will have no effect.
-
-Macro: defprogram-shortcut name &key (command (string-downcase (string name))) (props (quasiquote (quote (class #S(sb-impl::comma :expr (string-capitalize command) :kind 0))))) (map (quote *top-map*)) (key (quasiquote (kbd #S(sb-impl::comma :expr (concat H- (subseq command 0 1)) :kind 0)))) (pullp nil) (pull-name (intern1 (concat (string name) -PULL))) (pull-key (quasiquote (kbd #S(sb-impl::comma :expr (concat H-M- (subseq command 0 1)) :kind 0))))
-
-    Define a command and key binding to run or raise a program. If pullp is set, also define a command and key binding to run or pull the program.
-
-Variable: *initializing*
-
-    True when starting stumpwm. Use this variable in your rc file to run code that should only be executed once, when stumpwm starts up and loads the rc file.
+  The following is a list of commands that don’t really fit in any other section.
+** Commands
+*** emacs
+  Start emacs unless it is already running, in which case focus it.
+*** banish /&optional where/
+  Warp the mouse the lower right corner of the current head.
+*** ratwarp /x y/
+  Warp the mouse to the specified location.
+*** ratrelwarp /dx dy/
+  Warp the mouse by the specified amount from its current position.
+*** ratclick /&optional (button 1)/
+  Simulate a pointer button event at the current pointer location. Note: this
+function is unlikely to work unless your X server and CLX implementation
+support XTEST.
+*** echo-date
+  Display the date and time.
+*** eval-line /cmd/
+  Evaluate the s-expression and display the result(s).
+*** window-send-string /string &optional (window (current-window))/
+  Send the string of characters to the current window as if they’d been typed.
+*** reload
+  Reload StumpWM using asdf.
+*** loadrc
+  Reload the ‘~/.stumpwmrc’ file.
+*** keyboard-quit | quit
+  Quit StumpWM.
+*** restart-hard
+  Restart stumpwm. This is handy if a new stumpwm executable has been made and
+you wish to replace the existing process with it.
+
+  Any run-time customizations will be lost after the restart.
+*** restart-soft
+  Soft Restart StumpWM. The lisp process isn’t restarted. Instead, control
+jumps to the very beginning of the stumpwm program. This differs from
+RESTART, which restarts the unix process.
+
+  Since the process isn’t restarted, existing customizations remain after the restart.
+*** getsel
+  Echo the X selection.
+*** putsel /string/
+  Stuff the string /string/ into the X selection.
+*** command-mode
+  Command mode allows you to type ratpoison commands without needing
+the <C-t> prefix. Keys not bound in StumpWM will still get sent to the current
+window. To exit command mode, type <C-g>.
+*** copy-unhandled-error
+  When an unhandled error occurs, StumpWM restarts and attempts to continue.
+Unhandled errors should be reported to the mailing list so they can be fixed.
+Use this command to copy the unhandled error and backtrace to the X11 selection
+so you can paste in your email when submitting the bug report.
+*** commands
+  List all available commands.
+*** lastmsg
+  Display the last message. If the previous command was lastmsg, then continue
+cycling back through the message history.
+*** list-window-properties
+  List all the properties of the current window and their values, like xprop.
+** Functions
+*** run-commands /&rest commands/
+  Run each stumpwm command in sequence. This could be used if you’re used to
+ratpoison’s rc file and you just want to run commands or don’t know lisp very
+well. One might put the following in one’s rc file:
+
+  #+BEGIN_SRC lisp
+  (stumpwm:run-commands
+    "escape C-z"
+    "exec firefox"
+    "split")
+  #+END_SRC
+*** run-or-raise /cmd props &optional (all-groups *run-or-raise-all-groups*) (all-screens *run-or-raise-all-screens*)/
+  Run the shell command, /cmd/, unless an existing window matches /props/. /props/ is a
+property list with the following keys:
+**** :class
+  Match the window’s class.
+**** :instance
+  Match the window’s instance or resource-name.
+**** :role
+  Match the window’s WM_WINDOW_ROLE.
+**** :title
+  Match the window’s title.
+**** By default
+  By default, the global /*run-or-raise-all-groups*/ decides whether to search all
+groups or the current one for a running instance. /all-groups/ overrides this default.
+Similarily for /*run-or-raise-all-screens*/ and /all-screens/.
+*** run-or-pull /cmd props &optional (all-groups *run-or-raise-all-groups*) (all-screens *run-or-raise-all-screens*)/
+  Similar to run-or-raise, but move the matching window to the current frame
+instead of switching to the window.
+*** restarts-menu /err/
+  Display a menu with the active restarts and let the user pick one. Error is the error being
+recovered from. If the user aborts the menu, the error is re-signalled.
+** Macros
+*** defcommand /name (&rest args) (&rest interactive-args) &body body/
+  Create a command function and store its interactive hints in *command-hash*.
+The local variable %interactivep% can be used to check if the command was
+called interactively. If it is non-NIL then it was called from a keybinding
+or from the colon command.
+
+  The NAME argument can be a string, or a list of two symbols. If the latter,
+the first symbol names the command, and the second indicates the type of group
+under which this command will be usable. Currently, tile-group and
+floating-group are the two possible values.
+
+  INTERACTIVE-ARGS is a list of the following form: ((TYPE PROMPT) (TYPE PROMPT) ...)
+
+  each element in INTERACTIVE-ARGS declares the type and prompt for the command’s
+arguments.
+
+  TYPE can be one of the following:
+**** /:y-or-n/
+  A yes or no question returning T or NIL.
+**** /:variable/
+  A lisp variable
+**** /:function/
+  A lisp function
+**** /:command/
+  A stumpwm command as a string.
+**** /:key-seq/
+  A key sequence starting from *TOP-MAP*
+**** /:window-number/
+  An existing window number
+**** /:number/
+  An integer number
+**** /:string/
+  A string
+**** /:key/
+  A single key chord
+**** /:window-name/
+  An existing window’s name
+**** /:direction/
+  A direction symbol. One of :UP :DOWN :LEFT :RIGHT
+**** /:gravity/
+  A gravity symbol. One of :center :top :right :bottom :left :top-right :top-left
+:bottom-right :bottom-left
+**** /:group/
+  An existing group
+**** /:frame/
+  A frame
+**** /:shell/
+  A shell command
+**** /:rest/
+  The rest of the input yes to be parsed.
+**** /:module/
+  An existing stumpwm module
+**** Note
+  Note that new argument types can be created with DEFINE-STUMPWM-TYPE.
+
+  PROMPT can be string. In this case, if the corresponding argument is
+missing from an interactive call, stumpwm will use prompt for its value
+using PROMPT. If PROMPT is missing or nil, then the argument is considered
+an optional interactive argument and is not prompted for when missing.
+
+  Alternatively, instead of specifying nil for PROMPT or leaving it out, an
+element can just be the argument type.
+*** define-stumpwm-type /type (input prompt) &body body/
+  Create a new type that can be used for command arguments. type can be any symbol.
+
+  When body is evaluated input is bound to the argument-line. It is passed to
+argument-pop, argument-pop-rest, etc. prompt is the prompt that should be used
+when prompting the user for the argument.
+
+  #+BEGIN_SRC lisp
+  (define-stumpwm-type :symbol (input prompt)
+   (or (find-symbol (string-upcase
+              (or (argument-pop input)
+                           ;; Whitespace messes up find-symbol.
+                  (string-trim " "
+                     (completing-read (current-screen)
+                        prompt
+                        ;; find all symbols in the
+                        ;;  stumpwm package.
+                        (let (acc)
+                          (do-symbols (s (find-package "STUMPWM"))
+                            (push (string-downcase (symbol-name s)) acc))
+                          acc)))
+                        (throw 'error "Abort.")))
+                    "STUMPWM")
+       (throw 'error "Symbol not in STUMPWM package")))
+
+  (defcommand "symbol" (sym) ((:symbol "Pick a symbol: "))
+    (message "~a" (with-output-to-string (s)
+             (describe sym s))))
+  #+END_SRC
+
+  This code creates a new type called :symbol which finds the symbol in the
+stumpwm package. The command symbol uses it and then describes the symbol.
+*** with-restarts-menu /&body body/
+  Execute BODY. If an error occurs allow the user to pick a restart from a menu of
+possible restarts. If a restart is not chosen, resignal the error.
+*** defprogram-shortcut /name &key (command (string-downcase (string name))) (props (quasiquote (quote (class #S(sb-impl::comma :expr (string-capitalize command) :kind 0))))) (map (quote *top-map*)) (key (quasiquote (kbd #S(sb-impl::comma :expr (concat H- (subseq command 0 1)) :kind 0)))) (pullp nil) (pull-name (intern1 (concat (string name) -PULL))) (pull-key (quasiquote (kbd #S(sb-impl::comma :expr (concat H-M- (subseq command 0 1)) :kind 0))))/
+  Define a command and key binding to run or raise a program. If /pullp/ is set,
+also define a command and key binding to run or pull the program.
+** Variables
+*** *run-or-raise-all-groups*
+  When this is T the run-or-raise function searches all groups for a running instance.
+Set it to NIL to search only the current group.
+*** *run-or-raise-all-screens*
+  When this is T the run-or-raise function searches all screens for a running instance. Set
+it to NIL to search only the current screen. If /*run-or-raise-all-groups*/ is NIL this
+variable has no effect.
+*** *startup-message*
+  This is the message StumpWM displays when it starts. Set it to NIL to suppress.
+*** *suppress-abort-messages*
+  Suppress abort message when non-nil.
+*** *default-package*
+  This is the package eval reads and executes in. You might want to set this to :stumpwm if
+you find yourself using a lot of internal stumpwm symbols. Setting this variable anywhere
+but in your rc file will have no effect.
+*** *initializing*
+  True when starting stumpwm. Use this variable in your rc file to run code that should only
+be executed once, when stumpwm starts up and loads the rc file.
 ** Sections
 [[12.1 Menus]]
 [[12.2 StumpWM’s Data Directory]]
@@ -1843,102 +1796,87 @@ Variable: *initializing*
 [[12.5 Timers]]
 [[12.6 Getting Help]]
 ** 12.1 Menus
-
-Some commands present the options in a menu. The following are the menu key bindings:
-
-C-p
-Up
-k
-
-    Highlight the previous menu option.
-C-n
-Down
-j
-
-    Highlight the next menu option.
-C-g
-ESC
-
-    Abort the menu.
-RET
-
-    Select the highlighted option.
+  Some commands present the options in a menu. The following are the menu key bindings:
+*** C-p | Up | k
+  Highlight the previous menu option.
+*** C-n | Down | j
+  Highlight the next menu option.
+*** C-g | ESC
+  Abort the menu.
+*** RET
+  Select the highlighted option.
 ** 12.2 StumpWM’s Data Directory
-
-If you want to store StumpWM data between sessions, the recommended method is to store them in ‘~/.stumpwm.d/’. StumpWM supplies some functions to make doing this easier.
-
-Variable: *data-dir*
-
-    The directory used by stumpwm to store data between sessions.
-
-Function: data-dir-file name &optional type
-
-    Return a pathname inside stumpwm’s data dir with the specified name and type
-
-Macro: with-data-file (s file &rest keys &key (if-exists supersede) &allow-other-keys) &body body
-
-    Open a file in StumpWM’s data directory. keyword arguments are sent directly to OPEN. Note that IF-EXISTS defaults to :supersede, instead of :error.
+  If you want to store StumpWM data between sessions, the recommended method
+is to store them in ‘~/.stumpwm.d/’. StumpWM supplies some functions to make
+doing this easier.
+*** Variables
+**** *data-dir*
+  The directory used by stumpwm to store data between sessions.
+*** Functions
+**** data-dir-file /name &optional type/
+  Return a pathname inside stumpwm’s data dir with the specified name and type
+*** Macros
+**** with-data-file /(s file &rest keys &key (if-exists supersede) &allow-other-keys) &body body/
+  Open a file in StumpWM’s data directory. keyword arguments are sent directly to
+OPEN. Note that IF-EXISTS defaults to :supersede, instead of :error.
 ** 12.3 Debugging StumpWM
+*** Variables
+**** *debug-level*
+  Set this variable to a number > 0 to turn on debugging. The greater
+the number the more debugging output.
+**** *debug-stream*
+  This is the stream debugging output is sent to. It defaults to
+*error-output*. It may be more convenient for you to pipe debugging
+output directly to a file.
+*** Functions
+**** redirect-all-output /file/
+  Elect to redirect all output to the specified file. For instance, if
+you want everything to go to ~/.stumpwm.d/debug-output.txt you would do:
 
-Variable: *debug-level*
-
-    Set this variable to a number > 0 to turn on debugging. The greater the number the more debugging output.
-
-Variable: *debug-stream*
-
-    This is the stream debugging output is sent to. It defaults to *error-output*. It may be more convenient for you to pipe debugging output directly to a file.
-
-Function: redirect-all-output file
-
-    Elect to redirect all output to the specified file. For instance, if you want everything to go to ~/.stumpwm.d/debug-output.txt you would do:
-
-
-    (redirect-all-output (data-dir-file "debug-output" "txt"))
+  #+BEGIN_SRC lisp
+  (redirect-all-output (data-dir-file "debug-output" "txt"))
+  #+END_SRC
 ** 12.4 Sending a Bug Report
-While StumpWM’s code-base is quite mature, it still contains some bugs. If you encounter one here are some guidelines for making sure the developers can fix it:
-
-    Include a procedure for reproducing the bug/bad behavior. Ideally this will include numbered steps starting with instructions on how you start stumpwm. Also include what the expected behavior was.
-    Be as detailed as possible. Then add more detail!
-    Make sure its not something you introduced by using an empty ‘.xinitrc’ containing only ’exec /path/to/stumpwm’.
-    Make sure the bug is present even when ‘.stumwmrc’ is empty.
-    If you are using the git version, include the hash of the master branch, or better include the commit when you started to notice the bug.
-    If you have code that fixes the bug, then open a pull request at https://github.com/stumpwm/stumpwm/compare/.
-    If you don’t have code to fix the bug, then open an issue at https://github.com/stumpwm/stumpwm/issues/new.
+  While StumpWM’s code-base is quite mature, it still contains some bugs. If you
+encounter one here are some guidelines for making sure the developers can fix it:
+  - Include a procedure for reproducing the bug/bad behavior. Ideally this will
+    include numbered steps starting with instructions on how you start stumpwm.
+    Also include what the expected behavior was.
+  - Be as detailed as possible. Then add more detail!
+  - Make sure its not something you introduced by using an empty ‘.xinitrc’
+    containing only ’exec /path/to/stumpwm’.
+  - Make sure the bug is present even when ‘.stumwmrc’ is empty.
+  - If you are using the git version, include the hash of the master branch, or
+    better include the commit when you started to notice the bug.
+  - If you have code that fixes the bug, then open a pull request
+    at https://github.com/stumpwm/stumpwm/compare/.
+  - If you don’t have code to fix the bug, then open an issue
+    at https://github.com/stumpwm/stumpwm/issues/new.
 ** 12.5 Timers
-
-StumpWM has a timer system similar to that of Emacs.
-
-Function: run-with-timer secs repeat function &rest args
-
-    Perform an action after a delay of SECS seconds. Repeat the action every REPEAT seconds, if repeat is non-nil. SECS and REPEAT may be reals. The action is to call FUNCTION with arguments ARGS.
-
-Function: cancel-timer timer
-
+  StumpWM has a timer system similar to that of /Emacs/.
+*** Functions
+**** run-with-timer /secs repeat function &rest args/
+    Perform an action after a delay of SECS seconds. Repeat the action
+every REPEAT seconds, if repeat is non-nil. SECS and REPEAT may be reals.
+The action is to call FUNCTION with arguments ARGS.
+**** cancel-timer /timer/
     Remove TIMER from the list of active timers.
-
-Function: timer-p timer
-
+**** timer-p /timer/
     Return T if TIMER is a timer structure.
 ** 12.6 Getting Help
-Command: describe-key keys
-
-    Either interactively type the key sequence or supply it as text. This command prints the command bound to the specified key sequence.
-
-Command: describe-variable var
-
-    Print the online help associated with the specified variable.
-
-Command: describe-function fn
-
-    Print the online help associated with the specified function.
-
-Command: where-is cmd
-
-    Print the key sequences bound to the specified command.
-
-Command: modifiers
-
-    List the modifiers stumpwm recognizes and what MOD-X it thinks they’re on.
+*** Commands
+**** describe-key /keys/
+  Either interactively type the key sequence or supply it as text.
+This command prints the command bound to the specified key sequence.
+**** describe-variable /var/
+  Print the online help associated with the specified variable.
+**** describe-function /fn/
+  Print the online help associated with the specified function.
+**** where-is /cmd/
+  Print the key sequences bound to the specified command.
+**** modifiers
+  List the modifiers stumpwm recognizes and what MOD-X it thinks
+they’re on.
 * 13. Colors
 When specifying a color, it is possible to use its X11 Color Name (usually in the file ‘/etc/X11/rgb.txt’). You can also use a six digit hex string prefixed by a ’#’ character in the same way that you can specify colors in HTML.
 
