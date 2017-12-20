@@ -1572,14 +1572,11 @@ each directory seperated by a colon.
 *** *shell-program*
   The shell program used by run-shell-command.
 * 11. Interacting With X11
-
-Function: set-x-selection text &optional (selection primary)
-
-    Set the X11 selection string to string.
-
-Function: get-x-selection &optional timeout (selection primary)
-
-    Return the x selection no matter what client own it.
+** Functions
+*** set-x-selection /text &optional (selection primary)/
+  Set the X11 selection string to /string/.
+*** get-x-selection /&optional timeout (selection primary)/
+  Return the x selection no matter what client own it.
 * 12. Miscellaneous Commands
 
 The following is a list of commands that don’t really fit in any other section.
