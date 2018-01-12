@@ -18,6 +18,7 @@
 (define-key *root-map* (kbd "c") "exec urxvt")
 (define-key *root-map* (kbd "C-c") "exec urxvt")
 (define-key *root-map* (kbd "C-s") "swank")
+(define-key *top-map* (kbd "s-g") "toggle-gaps")
 
 ;;; Defaults ;;;
 ;; Change Cursor
@@ -47,3 +48,8 @@
            (current-screen)
            "Starting SWANK. M-x slime-connect RET RET, then (in-package stumpwm).")
           (setf server-running t)))))
+
+;; Gaps
+(load-module "swm-gaps")
+(setf swm-gaps:*inner-gaps-size* 5)
+(setf swm-gaps:*outer-gaps-size* 10)
