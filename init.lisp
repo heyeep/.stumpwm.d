@@ -2,6 +2,7 @@
 
 ;; Initiate
 (in-package :stumpwm)
+(setf *data-dir* "~/.stumpwm.d/")
 
 ;;; Theme
 ;; Window Appearance
