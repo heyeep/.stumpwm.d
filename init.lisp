@@ -80,9 +80,13 @@
   "Start/Switch to Chromium"
   (run-or-raise "chromium" '(:class "Chromium")))
 
-(defcommand reload () ()
+(defcommand !reload () ()
   "Reload StumpWM using 'loadrc'"
-  (run-commands "loadrc"))
+  (run-commands "reload" "loadrc"))
+
+(defcommand !restart () ()
+  "Restart StumpWM"
+  (run-commands "restart-hard"))
 
 ;;; WIP Workplace
 ;; |0    |1     |
