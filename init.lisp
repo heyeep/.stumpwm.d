@@ -71,6 +71,28 @@
   "Start/Switch to Chromium"
   (run-or-raise "chromium" '(:class "Chromium")))
 
+(defcommand reload () ()
+  "Reload StumpWM using 'loadrc'"
+  (run-commands "loadrc"))
+
+;;; WIP Workplace
+;; |0    |1     |
+;; |     |      |
+;; |     |------|
+;; |     |2     |
+;; |     |      |
+(defcommand start-workspace () ()
+  "Set up workplace"
+  (run-commands "grename Default")
+  (restore-from-file "~/.stumpwm.d/default.desktop")
+  (restore-window-placement-rules "~/.stumpwm.d/default.windows")
+  (define-frame-preference "Default"
+    (0 t t :class "Firefox")
+    (2 t t :class "Emacs")
+    (1 t t :title "urxvt"))
+  (run-commands "firefox"
+                "exec urxvt"
+                "Emacs"))
 ;;; Modeline
 ;; (if (not (head-mode-line (current-head)))
 ;;     (toggle-mode-line (current-screen) (current-head)))
@@ -82,9 +104,8 @@
 
 ;; Gaps
 (load-module "swm-gaps")
-(setf swm-gaps:*inner-gaps-size* 15)
-(setf swm-gaps:*outer-gaps-size* 30)
+(setf swm-gaps:*inner-gaps-size* 8)
+(setf swm-gaps:*outer-gaps-size* 16)
 (run-commands "toggle-gaps")
 
-;;; TODO: Startup Applications
-;; (defcommand start-applications)
+(run-commands "start-workspace")
