@@ -72,12 +72,12 @@
   (run-or-raise "chromium" '(:class "Chromium")))
 
 ;;; Modeline
-(if (not (head-mode-line (current-head)))
-     (toggle-mode-line (current-screen) (current-head)))
+;; (if (not (head-mode-line (current-head)))
+;;     (toggle-mode-line (current-screen) (current-head)))
 
 ;;; Modules
 ;; TODO: Power
-;;;(load-module "power")
+;; (load-module "power")
 ;; (power:start-laptop-lid-watcher)
 
 ;; Gaps
