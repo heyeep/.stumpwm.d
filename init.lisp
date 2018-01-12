@@ -9,6 +9,10 @@
       *maxsize-border-width* 0
       *window-border-style* :thick) ; :thick :thin :tight :none
 
+;; Move messages / command window
+(setf *message-window-gravity* :center)
+(setf *input-window-gravity* :center)
+
 ;; Change Cursor
 (stumpwm:run-shell-command "xsetroot -cursor_name left_ptr")
 
