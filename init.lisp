@@ -4,13 +4,17 @@
 (in-package :stumpwm)
 (setf *data-dir* "~/.stumpwm.d/")
 
+;; Focusing
+(setf *mouse-focus-policy* :click)
+
 ;;; Theme
 ;; Window Appearance
 (setf *normal-border-width* 1
       *maxsize-border-width* 0
-      *window-border-style* :thick) ; :thick :thin :tight :none
+      *window-border-style* :tight) ; :thick :thin :tight :none
 
 ;; Move messages / command window
+(setf *startup-message* "StumpWM")
 (setf *message-window-gravity* :center)
 (setf *input-window-gravity* :center)
 
