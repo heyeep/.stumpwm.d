@@ -3,7 +3,7 @@
 ;; Initiate
 (in-package :stumpwm)
 (setf *data-dir* "~/.stumpwm.d/")
-(setq *module-dir* "~/.stumpwm.d/modules/")
+(setf *module-dir* "modules/")
 
 ;; Focusing
 (setf *mouse-focus-policy* :click)
