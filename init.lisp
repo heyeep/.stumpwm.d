@@ -3,6 +3,7 @@
 ;; Initiate
 (in-package :stumpwm)
 (setf *data-dir* "~/.stumpwm.d/")
+(setq *module-dir* "~/.stumpwm.d/modules/")
 
 ;; Focusing
 (setf *mouse-focus-policy* :click)
@@ -123,5 +124,20 @@
 (setf swm-gaps:*inner-gaps-size* 8)
 (setf swm-gaps:*outer-gaps-size* 16)
 (run-commands "toggle-gaps")
+
+;; Apple Keys
+;; Sound
+(define-key *top-map* (kbd "XF86AudioRaiseVolume") "exec amixer set Master playback 5%+")
+(define-key *top-map* (kbd "XF86AudioLowerVolume") "exec amixer set Master playback 5%-")
+(define-key *top-map* (kbd "XF86AudioMute") "exec pactl set-sink-mute 0 toggle")
+
+;; System
+;; TODO: Doesn't properly suspend
+;; (define-key *top-map* (kbd "XF86Eject") "exec systemctl suspend")
+
+;; Keyboard Dimming
+;; TODO: Currently not working
+(define-key *top-map* (kbd "XF86KbdBrightnessDown") "exec kbdlight down")
+(define-key *top-map* (kbd "XF86KbdBrightnessUp") "exec kbdlight up")
 
 (run-commands "start-workspace")
