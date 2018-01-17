@@ -11,16 +11,20 @@
 ;;; Theme
 ;; Window Appearance
 (setf *normal-border-width* 1
+      *transient-border-width* 1
       *maxsize-border-width* 0
-      *window-border-style* :tight) ; :thick :thin :tight :none
+      *window-border-style* :thin) ; :thick :thin :tight :none
 
-;; Move messages / command window
-(set-msg-border-width 2)
+;; Windows
 (setf *startup-message* "StumpWM"
       *timeout-wait* 10
       *message-window-gravity* :center
-      *message-window-padding* 8
+      *message-window-padding* 16
       *input-window-gravity* :center)
+(set-focus-color "#fdf6e3")
+(set-unfocus-color "#073642")
+(set-win-bg-color "#002b36")
+(set-msg-border-width 2)
 
 ;; Change Cursor
 (stumpwm:run-shell-command "xsetroot -cursor_name left_ptr")
@@ -45,8 +49,8 @@
 (define-key *root-map* (kbd "c") "exec urxvt")
 (define-key *root-map* (kbd "C-c") "exec urxvt")
 (define-key *root-map* (kbd "C-s") "swank")
-(define-key *root-map* (kbd "f") "firefox")
-(define-key *root-map* (kbd "g") "chromium")
+(define-key *root-map* (kbd "b") "firefox")
+(define-key *root-map* (kbd "f") "conkeror")
 (define-key *top-map* (kbd "s-g") "toggle-gaps")
 
 ;; Swank
@@ -84,6 +88,10 @@
   "Start/Switch to Chromium"
   (run-or-raise "chromium" '(:class "Chromium")))
 
+(defcommand conkeror () ()
+  "Start/Switch to Chromium"
+  (run-or-raise "conkeror" '(:class "exec conkeror")))
+
 (defcommand !reload () ()
   "Reload StumpWM using 'loadrc'"
   (run-commands "reload" "loadrc"))
@@ -92,6 +100,16 @@
   "Restart StumpWM"
   (run-commands "restart-hard"))
 
+(defcommand search-variable (&optional (initial "")) (:rest)
+  (let ((cmd (read-one-line (current-screen) "SEARCH: " :initial-input initial)))
+    (when cmd
+      (echo-string (current-screen) cmd))))
+
+;;(define-key *root-map* (kbd "f") "search-variable")
+
+;;(defcommand zf (string) ()
+ ;; "Printout the valof a variable"
+  ;;(echo-string (current-screen) "Cake."))
 ;;; WIP Workplace
 ;; |0    |1     |
 ;; |     |      |
@@ -101,8 +119,8 @@
 (defcommand start-workspace () ()
   "Set up workplace"
   (run-commands "grename Default")
-  (restore-from-file "~/.stumpwm.d/default.desktop")
-  (restore-window-placement-rules "~/.stumpwm.d/default.windows")
+  (restore-from-file "~/.stumpwm.d/workplaces/default.desktop")
+  (restore-window-placement-rules "~/.stumpwm.d/workplaces/default.windows")
   (define-frame-preference "Default"
     (0 t t :class "Firefox")
     (2 t t :class "Emacs")
@@ -121,8 +139,8 @@
 
 ;; Gaps
 (load-module "swm-gaps")
-(setf swm-gaps:*inner-gaps-size* 8)
-(setf swm-gaps:*outer-gaps-size* 16)
+(setf swm-gaps:*inner-gaps-size* 4)
+(setf swm-gaps:*outer-gaps-size* 8)
 (run-commands "toggle-gaps")
 
 ;; Apple Keys
