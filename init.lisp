@@ -35,9 +35,6 @@
 ;; Change terminal
 (setq *terminal* "urxvt")
 
-;;; Scripts ;;;
-(run-shell-command "/.hiepscripts/mapKeys.sh")
-
 ;;; Key Bindings ;;;
 ;; Set prefix to Windows key
 ;; .xmodmap
@@ -99,6 +96,10 @@
 (defcommand !restart () ()
   "Restart StumpWM"
   (run-commands "restart-hard"))
+
+(defcommand !shutdown () ()
+  "Shutdown Computer"
+  (run-shell-command "/sbin/shutdown -r now"))
 
 (defcommand search-variable (&optional (initial "")) (:rest)
   (let ((cmd (read-one-line (current-screen) "SEARCH: " :initial-input initial)))
